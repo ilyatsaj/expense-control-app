@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'CategoryTile.dart';
+import 'category_tile.dart';
 
 class CategoriesList extends StatefulWidget {
   @override
@@ -34,6 +34,7 @@ class _CategoriesListState extends State<CategoriesList> {
             itemCount: state.categories!.length,
             itemBuilder: (context, index) {
               return CategoryTile(
+                category: state.categories![index],
                 name: state.categories![index].name,
                 totalAmount: state.categories![index].totalAmount,
                 // longPressCallback: (name) {

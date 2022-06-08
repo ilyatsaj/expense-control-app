@@ -10,4 +10,7 @@ class GetCategories extends CategoryEvent {
   GetCategories();
 }
 
-class DeleteCategory extends CategoryEvent {}
+class DeleteCategory extends CategoryEvent {
+  final Category category;
+  DeleteCategory(this.category);
+}
