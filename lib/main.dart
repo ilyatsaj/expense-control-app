@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'presentation/categories_screen.dart';
+import 'presentation/screens/categories_screen.dart';
 
 void main() {
+  //await Hive.initFlutter();
   runApp(const MyApp());
 }
 
