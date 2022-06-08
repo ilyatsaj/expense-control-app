@@ -5,14 +5,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'CategoryTile.dart';
 
-class CategoriesList extends StatelessWidget {
+class CategoriesList extends StatefulWidget {
+  @override
+  _CategoriesListState createState() => _CategoriesListState();
+}
+
+class _CategoriesListState extends State<CategoriesList> {
+  CategoryBloc? _categoryBloc;
+  @override
+  void initState() {
+    super.initState();
+    _categoryBloc = BlocProvider.of<CategoryBloc>(context)
+      ..add(GetCategories());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryBloc, CategoryState>(
+      bloc: _categoryBloc,
       builder: (context, state) {
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            if (state is Loaded) {
+        if (state is Loaded) {
+          return ListView.builder(
+            itemCount: state.categories!.length,
+            itemBuilder: (context, index) {
               return CategoryTile(
                 name: state.categories![index].name,
                 totalAmount: state.categories![index].totalAmount,
@@ -20,16 +40,15 @@ class CategoriesList extends StatelessWidget {
                 //   categoryData.updateCategory(category, name);
                 // },
               );
-            } else if (state is Loading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return const Text('Error in categories (custom)');
-            }
-          },
-          //itemCount: ,
-        );
+            },
+          );
+        } else if (state is LoadingFailure) {
+          return const Text('Error in categories (custom)');
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       },
     );
   }

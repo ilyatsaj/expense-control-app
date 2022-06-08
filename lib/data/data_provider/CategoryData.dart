@@ -3,7 +3,8 @@ import '../model/Category.dart';
 class CategoryData {
   final List<Category> _categories = [
     Category(name: 'food', totalAmount: 0),
-    Category(name: 'plane', totalAmount: 35)
+    Category(name: 'plane', totalAmount: 35),
+    Category(name: 'book', totalAmount: 15)
   ];
 
   // void initRepository() async {

@@ -9,13 +9,13 @@ part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  final CategoryRepository categoryRepository;
+  final _categoryRepository = CategoryRepository();
 
-  CategoryBloc({required this.categoryRepository}) : super(CategoryInitial()) {
+  CategoryBloc() : super(CategoryInitial()) {
     on<GetCategories>((event, emit) async {
       emit(Loading());
       try {
-        List<Category> categories = await categoryRepository.getCategories();
+        List<Category> categories = await _categoryRepository.getCategories();
         emit(Loaded(categories: categories));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
