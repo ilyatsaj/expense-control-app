@@ -14,6 +14,7 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
   final _nameInputController = TextEditingController();
   final _descriptionInputController = TextEditingController();
   int? iconDataCode;
+  bool isPressed = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,13 +82,22 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
       children: List.generate(ls.length, (index) {
         var iconData = ls[index];
         return IconButton(
-            highlightColor: Colors.blueAccent,
-            onPressed: () {
-              iconDataCode = iconData.codePoint;
-            },
-            icon: Icon(
-              iconData,
-            ));
+          color: iconDataCode == null
+              ? Colors.grey[600]
+              : iconDataCode == iconData.codePoint
+                  ? Colors.orange
+                  : Colors.grey[600],
+          onPressed: () {
+            setState(() {
+              isPressed = true;
+            });
+            iconDataCode = iconData.codePoint;
+            print(iconDataCode);
+          },
+          icon: Icon(
+            iconData,
+          ),
+        );
       }),
     );
   }

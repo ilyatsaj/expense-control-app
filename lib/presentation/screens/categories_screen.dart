@@ -17,8 +17,6 @@ class CategoriesScreen extends StatelessWidget {
               builder: (context) => const Dialog(
                     child: CreateNewCategoryWidget(),
                   ));
-          // Category category =
-          //     Category(name: result!, description: result!, totalAmount: 0);
 
           if (result != null) {
             BlocProvider.of<CategoryBloc>(context).add(AddCategory(result));
