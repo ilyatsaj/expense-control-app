@@ -14,3 +14,8 @@ class DeleteCategory extends CategoryEvent {
   final Category category;
   DeleteCategory(this.category);
 }
+
+class AddCategory extends CategoryEvent {
+  final Category category;
+  AddCategory(this.category);
+}

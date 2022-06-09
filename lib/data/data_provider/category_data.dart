@@ -28,9 +28,11 @@ class CategoryData {
     return categories.toList();
   }
 
-  void addCategory(String name, String description) {
-    // _categories
-    //     .add(Category(name: name, description: description, totalAmount: 0));
+  Future<void> addCategory(Category category) async {
+    print('heeeeeee: ' + category.name);
+    print('heeeeeee: ' + category.description);
+    print('heeeeeee: ' + category.totalAmount.toString());
+    _categoriesHive.add(category);
   }
 
   int get categoryLength {

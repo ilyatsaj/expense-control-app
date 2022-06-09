@@ -12,8 +12,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final CategoryData _categoryData = CategoryData();
 
   CategoryBloc() : super(CategoryInitial()) {
-    _categoryData.init();
     on<GetCategories>((event, emit) async {
+      _categoryData.init();
       emit(Loading());
       try {
         List<Category> categories = await _categoryData.getAll();
@@ -26,6 +26,17 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       emit(Loading());
       try {
         await _categoryData.removeCategory(event.category);
+        List<Category> categories = await _categoryData.getAll();
+        emit(Loaded(categories: categories));
+      } catch (e) {
+        emit(LoadingFailure(error: e.toString()));
+      }
+    });
+    on<AddCategory>((event, emit) async {
+      emit(Loading());
+      try {
+        print('entered add category on bloc');
+        await _categoryData.addCategory(event.category);
         List<Category> categories = await _categoryData.getAll();
         emit(Loaded(categories: categories));
       } catch (e) {
