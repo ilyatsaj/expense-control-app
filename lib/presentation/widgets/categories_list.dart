@@ -37,9 +37,7 @@ class _CategoriesListState extends State<CategoriesList> {
                 category: state.categories![index],
                 name: state.categories![index].name,
                 totalAmount: state.categories![index].totalAmount,
-                // longPressCallback: (name) {
-                //   categoryData.updateCategory(category, name);
-                // },
+                iconData: state.categories![index].iconData,
               );
             },
           );

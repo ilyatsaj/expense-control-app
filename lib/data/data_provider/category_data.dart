@@ -4,15 +4,21 @@ import '../model/category.dart';
 
 class CategoryData {
   final List<Category> _categories = [
-    Category(name: 'food', description: 'descr1', totalAmount: 0),
-    Category(name: 'plane', description: 'descr2', totalAmount: 35),
-    Category(name: 'book', description: 'descr3', totalAmount: 15)
+    Category(
+        name: 'food', description: 'descr1', totalAmount: 0, iconData: 61665),
+    Category(
+        name: 'plane', description: 'descr2', totalAmount: 35, iconData: 61668),
+    Category(
+        name: 'book', description: 'descr3', totalAmount: 15, iconData: 61667)
   ];
 
   late Box<Category> _categoriesHive;
 
   Future<void> init() async {
-    Hive.registerAdapter(CategoryAdapter());
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter<Category>(CategoryAdapter());
+    }
+
     _categoriesHive = await Hive.openBox<Category>('categories');
 
     await _categoriesHive.clear();
@@ -20,6 +26,7 @@ class CategoryData {
     await _categoriesHive.add(_categories[0]);
     await _categoriesHive.add(_categories[1]);
     await _categoriesHive.add(_categories[2]);
+    //print(_categoriesHive.values.first.iconData);
   }
 
   Future<List<Category>> getAll() async {
@@ -29,9 +36,6 @@ class CategoryData {
   }
 
   Future<void> addCategory(Category category) async {
-    print('heeeeeee: ' + category.name);
-    print('heeeeeee: ' + category.description);
-    print('heeeeeee: ' + category.totalAmount.toString());
     _categoriesHive.add(category);
   }
 

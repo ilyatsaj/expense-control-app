@@ -10,19 +10,19 @@ class CategoryTile extends StatelessWidget {
     required this.category,
     required this.name,
     required this.totalAmount,
+    required this.iconData,
   });
   final Category category;
   final String name;
   final int totalAmount;
-  //final Function longPressCallback;
+  final int iconData;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CategoryBloc(),
       child: ListTile(
-        leading: Icon(
-          Icons.play_arrow,
-        ),
+        leading: Icon(IconData(iconData, fontFamily: 'MaterialIcons')),
         title: Text(name),
         subtitle: Text(totalAmount.toString()),
         trailing: Row(mainAxisSize: MainAxisSize.min, children: [

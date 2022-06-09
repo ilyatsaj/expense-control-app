@@ -12,9 +12,12 @@ class Category extends HiveObject {
   @HiveField(2)
   int totalAmount;
 
-  Category({
-    required this.name,
-    required this.description,
-    required this.totalAmount,
-  });
+  @HiveField(3)
+  int iconData;
+
+  Category(
+      {required this.name,
+      required this.description,
+      required this.totalAmount,
+      required this.iconData});
 }
