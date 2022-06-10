@@ -1,22 +1,21 @@
-import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'category_tile.dart';
+import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
+import 'expense_tile.dart';
 
-class CategoriesList extends StatefulWidget {
+class ExpensesList extends StatefulWidget {
   @override
-  _CategoriesListState createState() => _CategoriesListState();
+  _ExpensesListState createState() => _ExpensesListState();
 }
 
-class _CategoriesListState extends State<CategoriesList> {
-  CategoryBloc? _categoryBloc;
+class _ExpensesListState extends State<ExpensesList> {
+  ExpenseBloc? _expenseBloc;
   @override
   void initState() {
     super.initState();
-    _categoryBloc = BlocProvider.of<CategoryBloc>(context)
-      ..add(GetCategories());
+    _expenseBloc = BlocProvider.of<ExpenseBloc>(context)..add(GetExpenses());
   }
 
   @override
@@ -26,15 +25,15 @@ class _CategoriesListState extends State<CategoriesList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(
-      bloc: _categoryBloc,
+    return BlocBuilder<ExpenseBloc, ExpenseState>(
+      bloc: _expenseBloc,
       builder: (context, state) {
         if (state is Loaded) {
           return ListView.builder(
-            itemCount: state.categories!.length,
+            itemCount: state.expenses!.length,
             itemBuilder: (context, index) {
-              return CategoryTile(
-                category: state.categories![index],
+              return ExpenseTile(
+                expense: state.expenses![index],
                 // name: state.categories![index].name,
                 // totalAmount: state.categories![index].totalAmount,
                 // iconData: state.categories![index].iconData,

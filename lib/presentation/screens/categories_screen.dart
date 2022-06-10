@@ -1,4 +1,4 @@
-import 'package:expense_control_app/business_logic/blocs/category_bloc.dart';
+import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,10 +12,11 @@ class CategoriesScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          final category = Category(name: '', description: '', totalAmount: 0);
           final result = await showDialog<Category>(
               context: context,
-              builder: (context) => const Dialog(
-                    child: CreateNewCategoryWidget(),
+              builder: (context) => Dialog(
+                    child: CreateNewCategoryWidget(category: category),
                   ));
 
           if (result != null) {

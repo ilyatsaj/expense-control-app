@@ -1,13 +1,20 @@
-import 'package:expense_control_app/business_logic/blocs/category_bloc.dart';
+import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import 'business_logic/blocs/expense_bloc/expense_bloc.dart';
+import 'data/model/category.dart';
+import 'data/model/expense.dart';
 import 'presentation/screens/categories_screen.dart';
 
 void main() async {
   await Hive.initFlutter();
+  Hive.registerAdapter<Category>(CategoryAdapter());
+  Hive.registerAdapter<Expense>(ExpenseAdapter());
+  await Hive.openBox<Category>('categories');
+  await Hive.openBox<Expense>('expenses');
   runApp(const MyApp());
 }
 
@@ -20,10 +27,15 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => CategoryBloc()),
+        BlocProvider(create: (context) => ExpenseBloc()),
       ],
       child: MaterialApp(
         title: 'Expense control',
-        home: CategoriesScreen(),
+        home: Scaffold(
+            appBar: AppBar(
+              title: Text('Expense control'),
+            ),
+            body: CategoriesScreen()),
       ),
     );
   }

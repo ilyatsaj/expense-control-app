@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:expense_control_app/data/data_provider/category_data.dart';
 import 'package:meta/meta.dart';
 
-import '../../data/model/category.dart';
+import '../../../data/model/category.dart';
 
 part 'category_event.dart';
 part 'category_state.dart';

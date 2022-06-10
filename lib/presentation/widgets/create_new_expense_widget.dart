@@ -2,17 +2,18 @@ import 'package:expense_control_app/data/model/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CreateNewCategoryWidget extends StatefulWidget {
-  final Category? category;
+import '../../data/model/expense.dart';
 
-  const CreateNewCategoryWidget({Key? key, this.category}) : super(key: key);
+class CreateNewExpenseWidget extends StatefulWidget {
+  final Expense? expense;
+
+  const CreateNewExpenseWidget({Key? key, this.expense}) : super(key: key);
 
   @override
-  _CreateNewCategoryWidgetState createState() =>
-      _CreateNewCategoryWidgetState();
+  _CreateNewExpenseWidgetState createState() => _CreateNewExpenseWidgetState();
 }
 
-class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
+class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
   TextEditingController? _nameInputController;
   TextEditingController? _descriptionInputController;
   bool isPressed = false;
@@ -21,22 +22,22 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
   void initState() {
     super.initState();
     _nameInputController =
-        TextEditingController(text: widget.category?.name ?? '');
+        TextEditingController(text: widget.expense?.name ?? '');
     _descriptionInputController =
-        TextEditingController(text: widget.category?.description ?? '');
-    iconDataCodeLocal = widget.category!.iconData;
-    widget.category ?? Category(name: '', description: '', totalAmount: 0);
+        TextEditingController(text: widget.expense?.description ?? '');
+    iconDataCodeLocal = widget.expense!.iconData;
+    widget.expense ?? Category(name: '', description: '', totalAmount: 0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Category name"),
+        Text("Expense name"),
         TextField(
           controller: _nameInputController,
         ),
-        Text("Category description"),
+        Text("Expense description"),
         TextField(
           controller: _descriptionInputController,
         ),
@@ -46,13 +47,14 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
                 child: _showIconGrid())),
         ElevatedButton(
             onPressed: () async {
-              final category = Category(
-                  id: widget.category?.id,
+              final expense = Expense(
+                  id: widget.expense?.id,
+                  categoryId: widget.expense!.categoryId,
                   name: _nameInputController!.text,
                   description: _descriptionInputController!.text,
-                  totalAmount: 0,
+                  amount: 0,
                   iconData: iconDataCodeLocal!);
-              Navigator.of(context).pop(category);
+              Navigator.of(context).pop(expense);
             },
             child: Text('Save'))
       ],

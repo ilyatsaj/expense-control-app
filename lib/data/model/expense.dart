@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
-part 'category.g.dart';
+part 'expense.g.dart';
 
-@HiveType(typeId: 1)
-class Category extends HiveObject {
+@HiveType(typeId: 2)
+class Expense extends HiveObject {
   @HiveField(0)
   double? id;
 
@@ -13,15 +13,19 @@ class Category extends HiveObject {
   String description;
 
   @HiveField(3)
-  int totalAmount;
+  int amount;
 
   @HiveField(4)
   int? iconData;
 
-  Category(
+  @HiveField(5)
+  double categoryId;
+
+  Expense(
       {this.id,
+      required this.categoryId,
       required this.name,
       required this.description,
-      required this.totalAmount,
+      required this.amount,
       this.iconData});
 }
