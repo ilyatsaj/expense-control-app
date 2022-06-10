@@ -4,19 +4,23 @@ part 'category.g.dart';
 @HiveType(typeId: 1)
 class Category extends HiveObject {
   @HiveField(0)
-  String name;
+  double? id;
 
   @HiveField(1)
-  String description;
+  String name;
 
   @HiveField(2)
-  int totalAmount;
+  String description;
 
   @HiveField(3)
+  int totalAmount;
+
+  @HiveField(4)
   int iconData;
 
   Category(
-      {required this.name,
+      {this.id,
+      required this.name,
       required this.description,
       required this.totalAmount,
       required this.iconData});

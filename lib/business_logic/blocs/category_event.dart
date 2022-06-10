@@ -19,3 +19,8 @@ class AddCategory extends CategoryEvent {
   final Category category;
   AddCategory(this.category);
 }
+
+class UpdateCategory extends CategoryEvent {
+  final Category category;
+  UpdateCategory(this.category);
+}

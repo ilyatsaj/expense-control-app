@@ -35,9 +35,9 @@ class _CategoriesListState extends State<CategoriesList> {
             itemBuilder: (context, index) {
               return CategoryTile(
                 category: state.categories![index],
-                name: state.categories![index].name,
-                totalAmount: state.categories![index].totalAmount,
-                iconData: state.categories![index].iconData,
+                // name: state.categories![index].name,
+                // totalAmount: state.categories![index].totalAmount,
+                // iconData: state.categories![index].iconData,
               );
             },
           );

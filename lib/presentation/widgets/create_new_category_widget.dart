@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CreateNewCategoryWidget extends StatefulWidget {
-  const CreateNewCategoryWidget({Key? key}) : super(key: key);
+  final Category? category;
+
+  const CreateNewCategoryWidget({Key? key, this.category}) : super(key: key);
 
   @override
   _CreateNewCategoryWidgetState createState() =>
@@ -11,10 +13,20 @@ class CreateNewCategoryWidget extends StatefulWidget {
 }
 
 class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
-  final _nameInputController = TextEditingController();
-  final _descriptionInputController = TextEditingController();
-  int? iconDataCode;
+  TextEditingController? _nameInputController;
+  TextEditingController? _descriptionInputController;
   bool isPressed = false;
+  int? iconDataCodeLocal;
+  @override
+  void initState() {
+    super.initState();
+    _nameInputController =
+        TextEditingController(text: widget.category?.name ?? '');
+    _descriptionInputController =
+        TextEditingController(text: widget.category?.description ?? '');
+    iconDataCodeLocal = widget.category!.iconData;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,13 +44,13 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
                 padding: EdgeInsets.symmetric(vertical: 12.0),
                 child: _showIconGrid())),
         ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               final category = Category(
-                  name: _nameInputController.text,
-                  description: _descriptionInputController.text,
+                  id: widget.category?.id,
+                  name: _nameInputController!.text,
+                  description: _descriptionInputController!.text,
                   totalAmount: 0,
-                  iconData: iconDataCode!);
-              print(category.iconData);
+                  iconData: iconDataCodeLocal!);
               Navigator.of(context).pop(category);
             },
             child: Text('Save'))
@@ -82,17 +94,15 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
       children: List.generate(ls.length, (index) {
         var iconData = ls[index];
         return IconButton(
-          color: iconDataCode == null
+          color: iconDataCodeLocal == null
               ? Colors.grey[600]
-              : iconDataCode == iconData.codePoint
+              : iconDataCodeLocal == iconData.codePoint
                   ? Colors.orange
                   : Colors.grey[600],
           onPressed: () {
             setState(() {
-              isPressed = true;
+              iconDataCodeLocal = iconData.codePoint;
             });
-            iconDataCode = iconData.codePoint;
-            print(iconDataCode);
           },
           icon: Icon(
             iconData,

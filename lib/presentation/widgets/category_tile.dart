@@ -1,3 +1,4 @@
+import 'package:expense_control_app/presentation/widgets/create_new_category_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,28 +9,39 @@ import '../../data/model/category.dart';
 class CategoryTile extends StatelessWidget {
   CategoryTile({
     required this.category,
-    required this.name,
-    required this.totalAmount,
-    required this.iconData,
+    // required this.name,
+    // required this.totalAmount,
+    // required this.iconData,
   });
   final Category category;
-  final String name;
-  final int totalAmount;
-  final int iconData;
+  // final String name;
+  // final int totalAmount;
+  // final int iconData;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CategoryBloc(),
       child: ListTile(
-        leading: Icon(IconData(iconData, fontFamily: 'MaterialIcons')),
-        title: Text(name),
-        subtitle: Text(totalAmount.toString()),
+        leading: Icon(IconData(category.iconData, fontFamily: 'MaterialIcons')),
+        title: Text(category.name),
+        subtitle: Text(category.totalAmount.toString()),
         trailing: Row(mainAxisSize: MainAxisSize.min, children: [
           IconButton(
             icon: new Icon(Icons.edit),
             highlightColor: Colors.grey,
-            onPressed: () {},
+            onPressed: () async {
+              final result = await showDialog<Category>(
+                  context: context,
+                  builder: (context) => Dialog(
+                        child: CreateNewCategoryWidget(category: category),
+                      ));
+
+              if (result != null) {
+                BlocProvider.of<CategoryBloc>(context)
+                    .add(UpdateCategory(result));
+              }
+            },
           ),
           IconButton(
             icon: new Icon(Icons.delete),
