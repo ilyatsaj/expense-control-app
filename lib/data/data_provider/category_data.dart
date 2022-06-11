@@ -59,7 +59,7 @@ class CategoryData {
         .firstWhere((element) => element.id == category.id);
     categoryToUpdate.name = category.name;
     categoryToUpdate.description = category.description;
-    categoryToUpdate.totalAmount = category.totalAmount;
+    //categoryToUpdate.totalAmount = category.totalAmount;
     categoryToUpdate.iconData = category.iconData;
     await categoryToUpdate.save();
     getAll();
