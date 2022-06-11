@@ -80,7 +80,7 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
                   name: _nameInputController!.text,
                   description: _descriptionInputController!.text,
                   amount: int.parse(_amountInputController!.text),
-                  iconData: _iconDataCodeLocal!);
+                  iconData: _iconDataCodeLocal);
               setState(() {
                 _nameInputController!.text.isEmpty
                     ? _validate = true

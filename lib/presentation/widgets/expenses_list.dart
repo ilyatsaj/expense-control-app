@@ -33,8 +33,6 @@ class _ExpensesListState extends State<ExpensesList> {
     return BlocBuilder<ExpenseBloc, ExpenseState>(
       bloc: _expenseBloc,
       builder: (context, state) {
-        print('entered here');
-        print(_expenseBloc?.state.hashCode);
         if (state is Loaded) {
           return ListView.builder(
             itemCount: state.expenses!.length,

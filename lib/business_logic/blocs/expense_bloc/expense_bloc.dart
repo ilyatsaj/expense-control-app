@@ -14,8 +14,8 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
   ExpenseBloc() : super(ExpenseInitial()) {
     on<GetExpenses>((event, emit) async {
+      print('here we go 2');
       _expenseData.init();
-      print('entered expenses');
       emit(Loading());
       try {
         List<Expense> expenses = await _expenseData.getAll(event.category);
@@ -25,9 +25,11 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       }
     });
     on<DeleteExpense>((event, emit) async {
+      print('here we go 1');
       emit(Loading());
       try {
-        await _expenseData.removeExpense(event.expense);
+        print('GATCHA');
+        await _expenseData.removeExpense(event.expense, event.category);
         List<Expense> expenses = await _expenseData.getAll(event.category);
         emit(Loaded(expenses: expenses));
       } catch (e) {
@@ -37,7 +39,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
     on<AddExpense>((event, emit) async {
       emit(Loading());
       try {
-        await _expenseData.addExpense(event.expense);
+        await _expenseData.addExpense(event.expense, event.category);
         List<Expense> expenses = await _expenseData.getAll(event.category);
         emit(Loaded(expenses: expenses));
       } catch (e) {
@@ -55,5 +57,16 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
         emit(LoadingFailure(error: e.toString()));
       }
     });
+
+    // on<GetTotalPerCategory>((event, emit) async {
+    //   emit(Loading());
+    //   try {
+    //     await _expenseData.getTotalAmountPerCategory(event.category);
+    //     // List<Expense> expenses = await _expenseData.getAll(event.category);
+    //     // emit(Loaded(expenses: expenses));
+    //   } catch (e) {
+    //     emit(LoadingFailure(error: e.toString()));
+    //   }
+    // });
   }
 }

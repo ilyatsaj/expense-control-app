@@ -19,7 +19,9 @@ class ExpenseTile extends StatelessWidget {
     return BlocProvider(
       create: (context) => ExpenseBloc(),
       child: ListTile(
-        leading: Icon(IconData(expense.iconData!, fontFamily: 'MaterialIcons')),
+        leading: expense.iconData != null
+            ? Icon(IconData(expense.iconData!, fontFamily: 'MaterialIcons'))
+            : Icon(null),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -50,7 +52,7 @@ class ExpenseTile extends StatelessWidget {
             highlightColor: Colors.grey,
             onPressed: () {
               BlocProvider.of<ExpenseBloc>(context)
-                  .add(DeleteExpense(category, expense));
+                  .add(DeleteExpense(expense, category));
             },
           ),
         ]),

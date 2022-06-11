@@ -16,7 +16,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<GetCategories>((event, emit) async {
       emit(Loading());
       try {
-        List<Category> categories = await _categoryData.getAll();
+        List<Category>? categories = await _categoryData.getAll();
         emit(Loaded(categories: categories));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));

@@ -14,7 +14,7 @@ class GetExpenses extends ExpenseEvent {
 class DeleteExpense extends ExpenseEvent {
   final Category category;
   final Expense expense;
-  DeleteExpense(this.category, this.expense);
+  DeleteExpense(this.expense, this.category);
 }
 
 class AddExpense extends ExpenseEvent {
@@ -28,3 +28,8 @@ class UpdateExpense extends ExpenseEvent {
   final Expense expense;
   UpdateExpense(this.category, this.expense);
 }
+
+// class GetTotalPerCategory extends ExpenseEvent {
+//   final Category category;
+//   GetTotalPerCategory(this.category);
+// }

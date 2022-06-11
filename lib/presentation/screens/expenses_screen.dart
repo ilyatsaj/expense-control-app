@@ -1,3 +1,4 @@
+import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ class ExpensesScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text('Expense control'),
         ),
         floatingActionButton: FloatingActionButton(
@@ -36,7 +38,21 @@ class ExpensesScreen extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Container(),
+            Container(
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      BlocProvider.of<CategoryBloc>(context)
+                          .add(GetCategories());
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
+                  Expanded(child: Text('Expenses')),
+                ],
+              ),
+            ),
             Expanded(
               child: ExpensesList(
                 category: category,

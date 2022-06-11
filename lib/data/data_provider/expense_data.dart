@@ -56,23 +56,16 @@ class ExpenseData {
     return expenses;
   }
 
-  Future<void> addExpense(Expense expense) async {
-    print('ENTERED addExpense');
-    print(expense.id);
-    print(expense.categoryId);
-    print(expense.name);
-    print(expense.description);
-    print(expense.amount);
+  Future<void> addExpense(Expense expense, Category category) async {
     expense.id = _expensesHive.values.last.id == null
         ? null
         : _expensesHive.values.last.id! + 1;
     _expensesHive.add(expense);
-    print('AFTER ADDING addExpense');
-    print(expense.id);
-    print(expense.categoryId);
-    print(expense.name);
-    print(expense.description);
-    print(expense.amount);
+    Box<Category> categoriesHive = await Hive.openBox<Category>('categories');
+    final categoryToUpdate = categoriesHive.values
+        .firstWhere((element) => element.id == category.id);
+    categoryToUpdate.totalAmount = category.totalAmount + expense.amount;
+    await categoryToUpdate.save();
   }
 
   Future<void> updateExpense(Expense expense) async {
@@ -85,10 +78,14 @@ class ExpenseData {
     await expenseToUpdate.save();
   }
 
-  Future<void> removeExpense(Expense expense) async {
+  Future<void> removeExpense(Expense expense, Category category) async {
     final expenseToRemove = _expensesHive.values
         .firstWhere((element) => element.name == expense.name);
     await expenseToRemove.delete();
-    //_categories.remove(category);
+    Box<Category> categoriesHive = await Hive.openBox<Category>('categories');
+    final categoryToUpdate = categoriesHive.values
+        .firstWhere((element) => element.id == category.id);
+    categoryToUpdate.totalAmount = category.totalAmount - expense.amount;
+    await categoryToUpdate.save();
   }
 }

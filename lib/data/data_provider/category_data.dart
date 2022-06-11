@@ -20,7 +20,7 @@ class CategoryData {
         id: 2,
         name: 'book',
         description: 'descr3',
-        totalAmount: 15,
+        totalAmount: 4,
         iconData: 61667)
   ];
 
@@ -55,7 +55,6 @@ class CategoryData {
 
   Future<void> updateCategory(Category category) async {
     _categoriesHive = await Hive.openBox<Category>('categories');
-    //final categoryToUpdate = _categoriesHive.get(category.key);
     final categoryToUpdate = _categoriesHive.values
         .firstWhere((element) => element.id == category.id);
     categoryToUpdate.name = category.name;
@@ -63,6 +62,7 @@ class CategoryData {
     categoryToUpdate.totalAmount = category.totalAmount;
     categoryToUpdate.iconData = category.iconData;
     await categoryToUpdate.save();
+    getAll();
   }
 
   Future<void> removeCategory(Category category) async {
@@ -70,6 +70,5 @@ class CategoryData {
     final categoryToRemove = _categoriesHive.values
         .firstWhere((element) => element.name == category.name);
     await categoryToRemove.delete();
-    //_categories.remove(category);
   }
 }
