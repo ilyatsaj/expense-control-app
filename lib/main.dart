@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import 'business_logic/blocs/expense_bloc/expense_bloc.dart';
+import 'data/data_provider/category_data.dart';
 import 'data/model/category.dart';
 import 'data/model/expense.dart';
 import 'presentation/screens/categories_screen.dart';
@@ -15,6 +16,10 @@ void main() async {
   Hive.registerAdapter<Expense>(ExpenseAdapter());
   await Hive.openBox<Category>('categories');
   await Hive.openBox<Expense>('expenses');
+  final CategoryData _categoryData = CategoryData();
+  final CategoryData _expenseData = CategoryData();
+  _categoryData.init;
+  _expenseData.init;
   runApp(const MyApp());
 }
 

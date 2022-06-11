@@ -27,7 +27,9 @@ class CategoriesScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(),
+          Container(
+            child: Text('Categories'),
+          ),
           Expanded(
             child: CategoriesList(),
           )

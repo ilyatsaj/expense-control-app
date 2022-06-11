@@ -1,6 +1,7 @@
 import 'package:expense_control_app/data/model/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../data/model/expense.dart';
 
@@ -16,8 +17,9 @@ class CreateNewExpenseWidget extends StatefulWidget {
 class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
   TextEditingController? _nameInputController;
   TextEditingController? _descriptionInputController;
-  bool isPressed = false;
-  int? iconDataCodeLocal;
+  TextEditingController? _amountInputController;
+  int? _iconDataCodeLocal;
+  bool _validate = false;
   @override
   void initState() {
     super.initState();
@@ -25,21 +27,46 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
         TextEditingController(text: widget.expense?.name ?? '');
     _descriptionInputController =
         TextEditingController(text: widget.expense?.description ?? '');
-    iconDataCodeLocal = widget.expense!.iconData;
+    _amountInputController =
+        TextEditingController(text: widget.expense?.amount.toString() ?? '');
+    _iconDataCodeLocal = widget.expense!.iconData;
     widget.expense ?? Category(name: '', description: '', totalAmount: 0);
+  }
+
+  @override
+  void dispose() {
+    _nameInputController?.dispose();
+    _descriptionInputController?.dispose();
+    _amountInputController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Expense name"),
         TextField(
           controller: _nameInputController,
+          decoration: InputDecoration(
+            labelText: 'Expense name',
+            errorText: _validate ? 'Value Can\'t Be Empty' : null,
+          ),
         ),
-        Text("Expense description"),
         TextField(
           controller: _descriptionInputController,
+          decoration: const InputDecoration(
+            labelText: 'Description',
+          ),
+        ),
+        TextField(
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          controller: _amountInputController,
+          decoration: const InputDecoration(
+            labelText: 'Amount',
+          ),
         ),
         Expanded(
             child: Container(
@@ -52,9 +79,14 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
                   categoryId: widget.expense!.categoryId,
                   name: _nameInputController!.text,
                   description: _descriptionInputController!.text,
-                  amount: 0,
-                  iconData: iconDataCodeLocal!);
-              Navigator.of(context).pop(expense);
+                  amount: int.parse(_amountInputController!.text),
+                  iconData: _iconDataCodeLocal!);
+              setState(() {
+                _nameInputController!.text.isEmpty
+                    ? _validate = true
+                    : _validate = false;
+              });
+              if (!_validate) Navigator.of(context).pop(expense);
             },
             child: Text('Save'))
       ],
@@ -97,14 +129,14 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
       children: List.generate(ls.length, (index) {
         var iconData = ls[index];
         return IconButton(
-          color: iconDataCodeLocal == null
+          color: _iconDataCodeLocal == null
               ? Colors.grey[600]
-              : iconDataCodeLocal == iconData.codePoint
+              : _iconDataCodeLocal == iconData.codePoint
                   ? Colors.orange
                   : Colors.grey[600],
           onPressed: () {
             setState(() {
-              iconDataCodeLocal = iconData.codePoint;
+              _iconDataCodeLocal = iconData.codePoint;
             });
           },
           icon: Icon(

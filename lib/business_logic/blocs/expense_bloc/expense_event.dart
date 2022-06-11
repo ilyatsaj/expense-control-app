@@ -7,20 +7,24 @@ abstract class ExpenseEvent extends Equatable {
 }
 
 class GetExpenses extends ExpenseEvent {
-  GetExpenses();
+  final Category category;
+  GetExpenses(this.category);
 }
 
 class DeleteExpense extends ExpenseEvent {
+  final Category category;
   final Expense expense;
-  DeleteExpense(this.expense);
+  DeleteExpense(this.category, this.expense);
 }
 
 class AddExpense extends ExpenseEvent {
+  final Category category;
   final Expense expense;
-  AddExpense(this.expense);
+  AddExpense(this.category, this.expense);
 }
 
 class UpdateExpense extends ExpenseEvent {
+  final Category category;
   final Expense expense;
-  UpdateExpense(this.expense);
+  UpdateExpense(this.category, this.expense);
 }

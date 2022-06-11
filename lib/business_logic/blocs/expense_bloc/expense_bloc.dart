@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../data/data_provider/expense_data.dart';
+import '../../../data/model/category.dart';
 import '../../../data/model/expense.dart';
 
 part 'expense_event.dart';
@@ -14,9 +15,10 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
   ExpenseBloc() : super(ExpenseInitial()) {
     on<GetExpenses>((event, emit) async {
       _expenseData.init();
+      print('entered expenses');
       emit(Loading());
       try {
-        List<Expense> expenses = await _expenseData.getAll();
+        List<Expense> expenses = await _expenseData.getAll(event.category);
         emit(Loaded(expenses: expenses));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
@@ -26,7 +28,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       emit(Loading());
       try {
         await _expenseData.removeExpense(event.expense);
-        List<Expense> expenses = await _expenseData.getAll();
+        List<Expense> expenses = await _expenseData.getAll(event.category);
         emit(Loaded(expenses: expenses));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
@@ -36,7 +38,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       emit(Loading());
       try {
         await _expenseData.addExpense(event.expense);
-        List<Expense> expenses = await _expenseData.getAll();
+        List<Expense> expenses = await _expenseData.getAll(event.category);
         emit(Loaded(expenses: expenses));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
@@ -47,7 +49,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       emit(Loading());
       try {
         await _expenseData.updateExpense(event.expense);
-        List<Expense> expenses = await _expenseData.getAll();
+        List<Expense> expenses = await _expenseData.getAll(event.category);
         emit(Loaded(expenses: expenses));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));

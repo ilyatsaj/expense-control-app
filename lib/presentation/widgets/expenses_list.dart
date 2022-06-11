@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
+import '../../data/model/category.dart';
 import 'expense_tile.dart';
 
 class ExpensesList extends StatefulWidget {
+  final Category category;
+
+  const ExpensesList({Key? key, required this.category}) : super(key: key);
   @override
   _ExpensesListState createState() => _ExpensesListState();
 }
@@ -15,7 +19,8 @@ class _ExpensesListState extends State<ExpensesList> {
   @override
   void initState() {
     super.initState();
-    _expenseBloc = BlocProvider.of<ExpenseBloc>(context)..add(GetExpenses());
+    _expenseBloc = BlocProvider.of<ExpenseBloc>(context)
+      ..add(GetExpenses(widget.category));
   }
 
   @override
@@ -28,20 +33,20 @@ class _ExpensesListState extends State<ExpensesList> {
     return BlocBuilder<ExpenseBloc, ExpenseState>(
       bloc: _expenseBloc,
       builder: (context, state) {
+        print('entered here');
+        print(_expenseBloc?.state.hashCode);
         if (state is Loaded) {
           return ListView.builder(
             itemCount: state.expenses!.length,
             itemBuilder: (context, index) {
               return ExpenseTile(
+                category: widget.category,
                 expense: state.expenses![index],
-                // name: state.categories![index].name,
-                // totalAmount: state.categories![index].totalAmount,
-                // iconData: state.categories![index].iconData,
               );
             },
           );
         } else if (state is LoadingFailure) {
-          return const Text('Error in categories (custom)');
+          return const Text('Error in expenses (custom)');
         } else {
           return const Center(
             child: CircularProgressIndicator(),

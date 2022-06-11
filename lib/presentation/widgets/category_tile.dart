@@ -10,20 +10,23 @@ import '../screens/expenses_screen.dart';
 class CategoryTile extends StatelessWidget {
   CategoryTile({
     required this.category,
-    // required this.name,
-    // required this.totalAmount,
-    // required this.iconData,
   });
   final Category category;
-  // final String name;
-  // final int totalAmount;
-  // final int iconData;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CategoryBloc(),
       child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+          side: MaterialStateProperty.all(
+            const BorderSide(
+              color: Colors.grey,
+              width: 1,
+            ),
+          ),
+        ),
         onPressed: () {
           Navigator.push(
               context,
@@ -33,34 +36,43 @@ class CategoryTile extends StatelessWidget {
         child: ListTile(
           leading:
               Icon(IconData(category.iconData!, fontFamily: 'MaterialIcons')),
-          title: Text(category.name),
-          subtitle: Text(category.totalAmount.toString()),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-            IconButton(
-              icon: new Icon(Icons.edit),
-              highlightColor: Colors.grey,
-              onPressed: () async {
-                final result = await showDialog<Category>(
-                    context: context,
-                    builder: (context) => Dialog(
-                          child: CreateNewCategoryWidget(category: category),
-                        ));
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(category.name),
+              Text('${category.totalAmount} \$'),
+            ],
+          ),
+          //subtitle: Text(category.description),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: new Icon(Icons.edit),
+                highlightColor: Colors.grey,
+                onPressed: () async {
+                  final result = await showDialog<Category>(
+                      context: context,
+                      builder: (context) => Dialog(
+                            child: CreateNewCategoryWidget(category: category),
+                          ));
 
-                if (result != null) {
+                  if (result != null) {
+                    BlocProvider.of<CategoryBloc>(context)
+                        .add(UpdateCategory(result));
+                  }
+                },
+              ),
+              IconButton(
+                icon: new Icon(Icons.delete),
+                highlightColor: Colors.grey,
+                onPressed: () {
                   BlocProvider.of<CategoryBloc>(context)
-                      .add(UpdateCategory(result));
-                }
-              },
-            ),
-            IconButton(
-              icon: new Icon(Icons.delete),
-              highlightColor: Colors.grey,
-              onPressed: () {
-                BlocProvider.of<CategoryBloc>(context)
-                    .add(DeleteCategory(category));
-              },
-            ),
-          ]),
+                      .add(DeleteCategory(category));
+                },
+              ),
+            ],
+          ),
           // onLongPress: () {
           //   longPressCallback(name);
           // },

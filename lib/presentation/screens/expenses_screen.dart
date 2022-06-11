@@ -28,7 +28,8 @@ class ExpensesScreen extends StatelessWidget {
                     ));
 
             if (result != null) {
-              BlocProvider.of<ExpenseBloc>(context).add(AddExpense(result));
+              BlocProvider.of<ExpenseBloc>(context)
+                  .add(AddExpense(category, result));
             }
           },
           child: Icon(Icons.add),
@@ -37,7 +38,9 @@ class ExpensesScreen extends StatelessWidget {
           children: [
             Container(),
             Expanded(
-              child: ExpensesList(),
+              child: ExpensesList(
+                category: category,
+              ),
             )
           ],
         ),
