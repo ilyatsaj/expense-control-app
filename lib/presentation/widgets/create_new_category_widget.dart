@@ -25,7 +25,8 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
     _descriptionInputController =
         TextEditingController(text: widget.category?.description ?? '');
     iconDataCodeLocal = widget.category!.iconData;
-    widget.category ?? Category(name: '', description: '', totalAmount: 0);
+    // widget.category ??
+    //     Category(name: '', description: '', totalAmount: 0, dc: DateTime.now());
   }
 
   @override
@@ -51,7 +52,8 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
                   name: _nameInputController!.text,
                   description: _descriptionInputController!.text,
                   totalAmount: 0,
-                  iconData: iconDataCodeLocal!);
+                  iconData: iconDataCodeLocal,
+                  dc: DateTime.now());
               Navigator.of(context).pop(category);
             },
             child: Text('Save'))

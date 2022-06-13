@@ -1,4 +1,3 @@
-import 'package:expense_control_app/data/model/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +29,7 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
     _amountInputController =
         TextEditingController(text: widget.expense?.amount.toString() ?? '');
     _iconDataCodeLocal = widget.expense!.iconData;
-    widget.expense ?? Category(name: '', description: '', totalAmount: 0);
+    // widget.expense ?? Category(name: '', description: '', totalAmount: 0);
   }
 
   @override
@@ -80,7 +79,8 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
                   name: _nameInputController!.text,
                   description: _descriptionInputController!.text,
                   amount: int.parse(_amountInputController!.text),
-                  iconData: _iconDataCodeLocal);
+                  iconData: _iconDataCodeLocal,
+                  dc: DateTime.now());
               setState(() {
                 _nameInputController!.text.isEmpty
                     ? _validate = true

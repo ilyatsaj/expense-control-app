@@ -21,11 +21,15 @@ class Expense extends HiveObject {
   @HiveField(5)
   double categoryId;
 
+  @HiveField(6)
+  DateTime dc;
+
   Expense(
       {this.id,
       required this.categoryId,
       required this.name,
       required this.description,
       required this.amount,
+      required this.dc,
       this.iconData});
 }

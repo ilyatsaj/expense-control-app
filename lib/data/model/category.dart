@@ -18,10 +18,14 @@ class Category extends HiveObject {
   @HiveField(4)
   int? iconData;
 
+  @HiveField(5)
+  DateTime dc;
+
   Category(
       {this.id,
       required this.name,
       required this.description,
       required this.totalAmount,
+      required this.dc,
       this.iconData});
 }

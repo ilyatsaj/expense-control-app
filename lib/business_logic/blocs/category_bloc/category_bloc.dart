@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:expense_control_app/data/data_provider/category_data.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import '../../../data/model/category.dart';
@@ -17,6 +18,15 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       emit(Loading());
       try {
         List<Category>? categories = await _categoryData.getAll();
+        if (event.dateTimeRange != null) {
+          categories = categories
+              .where((element) =>
+                  element.dc.compareTo(event.dateTimeRange!.start) == 0 ||
+                  element.dc.compareTo(event.dateTimeRange!.end) == 0) //||
+              // (element.dc.compareTo(event.dateTimeRange!.start) > 0 &&
+              //     element.dc.compareTo(event.dateTimeRange!.end) < 0))
+              .toList();
+        }
         emit(Loaded(categories: categories));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));

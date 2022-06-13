@@ -7,7 +7,8 @@ abstract class CategoryEvent extends Equatable {
 }
 
 class GetCategories extends CategoryEvent {
-  GetCategories();
+  final DateTimeRange? dateTimeRange;
+  GetCategories(this.dateTimeRange);
 }
 
 class DeleteCategory extends CategoryEvent {

@@ -10,28 +10,32 @@ class ExpenseData {
         name: 'potato',
         description: 'descr1',
         amount: 2,
-        iconData: 61665),
+        iconData: 61665,
+        dc: DateTime.now()),
     Expense(
         id: 1,
         categoryId: 1,
         name: 'tomato',
         description: 'descr2',
         amount: 35,
-        iconData: 61668),
+        iconData: 61668,
+        dc: DateTime.now()),
     Expense(
         id: 2,
         categoryId: 1,
         name: 'cucumber',
         description: 'descr3',
         amount: 15,
-        iconData: 61667),
+        iconData: 61667,
+        dc: DateTime.now()),
     Expense(
         id: 3,
         categoryId: 2,
         name: 'Harry Potter book',
         description: 'descr3',
         amount: 4,
-        iconData: 61667)
+        iconData: 61667,
+        dc: DateTime.now()),
   ];
 
   late Box<Expense> _expensesHive;
@@ -39,7 +43,7 @@ class ExpenseData {
   Future<void> init() async {
     _expensesHive = await Hive.openBox<Expense>('expenses');
 
-    // await _expensesHive.clear();
+    //await _expensesHive.clear();
     //
     // await _expensesHive.add(_expenses[0]);
     // await _expensesHive.add(_expenses[1]);

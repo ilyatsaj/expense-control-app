@@ -2,6 +2,7 @@ import 'package:expense_control_app/presentation/widgets/create_new_category_wid
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../business_logic/blocs/category_bloc/category_bloc.dart';
 import '../../data/model/category.dart';
@@ -34,12 +35,14 @@ class CategoryTile extends StatelessWidget {
                   builder: (context) => ExpensesScreen(category: category)));
         },
         child: ListTile(
-          leading:
-              Icon(IconData(category.iconData!, fontFamily: 'MaterialIcons')),
+          leading: category.iconData != null
+              ? Icon(IconData(category.iconData!, fontFamily: 'MaterialIcons'))
+              : Icon(null),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(category.name),
+              Text('${DateFormat.yMd().format(category.dc)}'),
               Text('${category.totalAmount} \$'),
             ],
           ),

@@ -6,6 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'category_tile.dart';
 
 class CategoriesList extends StatefulWidget {
+  DateTimeRange? selectedDateRange;
+  CategoriesList({required DateTimeRange? selectedDateRange, Key? key})
+      : super(key: key);
+
   @override
   _CategoriesListState createState() => _CategoriesListState();
 }
@@ -16,7 +20,7 @@ class _CategoriesListState extends State<CategoriesList> {
   void initState() {
     super.initState();
     _categoryBloc = BlocProvider.of<CategoryBloc>(context)
-      ..add(GetCategories());
+      ..add(GetCategories(widget.selectedDateRange));
   }
 
   @override
@@ -35,9 +39,6 @@ class _CategoriesListState extends State<CategoriesList> {
             itemBuilder: (context, index) {
               return CategoryTile(
                 category: state.categories![index],
-                // name: state.categories![index].name,
-                // totalAmount: state.categories![index].totalAmount,
-                // iconData: state.categories![index].iconData,
               );
             },
           );

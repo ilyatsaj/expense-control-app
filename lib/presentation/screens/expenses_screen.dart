@@ -22,7 +22,11 @@ class ExpensesScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final expense = Expense(
-                categoryId: category.id!, name: '', description: '', amount: 0);
+                categoryId: category.id!,
+                name: '',
+                description: '',
+                amount: 0,
+                dc: DateTime.now());
             final result = await showDialog<Expense>(
                 context: context,
                 builder: (context) => Dialog(
@@ -44,7 +48,7 @@ class ExpensesScreen extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       BlocProvider.of<CategoryBloc>(context)
-                          .add(GetCategories());
+                          .add(GetCategories(null));
                       Navigator.pop(context);
                     },
                     icon: Icon(Icons.arrow_back_ios),
