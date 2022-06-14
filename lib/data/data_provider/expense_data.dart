@@ -61,10 +61,16 @@ class ExpenseData {
   }
 
   Future<void> addExpense(Expense expense, Category category) async {
-    expense.id = _expensesHive.values.last.id == null
-        ? null
-        : _expensesHive.values.last.id! + 1;
+    if (!_expensesHive.values.isEmpty) {
+      expense.id = _expensesHive.values.last.id == null
+          ? null
+          : _expensesHive.values.last.id! + 1;
+    } else {
+      expense.id = 0;
+    }
+
     _expensesHive.add(expense);
+
     Box<Category> categoriesHive = await Hive.openBox<Category>('categories');
     final categoryToUpdate = categoriesHive.values
         .firstWhere((element) => element.id == category.id);

@@ -17,14 +17,33 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<GetCategories>((event, emit) async {
       emit(Loading());
       try {
+        print('DDD1');
         List<Category>? categories = await _categoryData.getAll();
+        print('DDD2');
         if (event.dateTimeRange != null) {
+          DateTime rangeStart = DateTime.utc(event.dateTimeRange!.start.year,
+              event.dateTimeRange!.start.month, event.dateTimeRange!.start.day);
+          DateTime rangeEnd = DateTime.utc(event.dateTimeRange!.end.year,
+              event.dateTimeRange!.end.month, event.dateTimeRange!.end.day);
+
           categories = categories
               .where((element) =>
-                  element.dc.compareTo(event.dateTimeRange!.start) == 0 ||
-                  element.dc.compareTo(event.dateTimeRange!.end) == 0) //||
-              // (element.dc.compareTo(event.dateTimeRange!.start) > 0 &&
-              //     element.dc.compareTo(event.dateTimeRange!.end) < 0))
+                  DateTime.utc(
+                              element.dc.year, element.dc.month, element.dc.day)
+                          .compareTo(rangeStart) ==
+                      0 ||
+                  DateTime.utc(
+                              element.dc.year, element.dc.month, element.dc.day)
+                          .compareTo(rangeEnd) ==
+                      0 ||
+                  (DateTime.utc(element.dc.year, element.dc.month,
+                                  element.dc.day)
+                              .compareTo(rangeStart) >
+                          0 &&
+                      DateTime.utc(element.dc.year, element.dc.month,
+                                  element.dc.day)
+                              .compareTo(rangeEnd) <
+                          0))
               .toList();
         }
         emit(Loaded(categories: categories));

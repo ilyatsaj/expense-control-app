@@ -48,10 +48,7 @@ class CategoryData {
   }
 
   Future<void> addCategory(Category category) async {
-    print('you are here');
-    //print(category.dc);
     _categoriesHive = await Hive.openBox<Category>('categories');
-    print(_categoriesHive.values.isEmpty);
     if (!_categoriesHive.values.isEmpty) {
       category.id = _categoriesHive.values.last.id == null
           ? null

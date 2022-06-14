@@ -14,7 +14,6 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
   ExpenseBloc() : super(ExpenseInitial()) {
     on<GetExpenses>((event, emit) async {
-      print('here we go 2');
       _expenseData.init();
       emit(Loading());
       try {
@@ -25,10 +24,8 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       }
     });
     on<DeleteExpense>((event, emit) async {
-      print('here we go 1');
       emit(Loading());
       try {
-        print('GATCHA');
         await _expenseData.removeExpense(event.expense, event.category);
         List<Expense> expenses = await _expenseData.getAll(event.category);
         emit(Loaded(expenses: expenses));
