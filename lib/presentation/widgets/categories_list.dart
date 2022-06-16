@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../helpers/date_helper.dart';
 import 'category_tile.dart';
 
 class CategoriesList extends StatefulWidget {
@@ -18,9 +19,8 @@ class _CategoriesListState extends State<CategoriesList> {
   CategoryBloc? _categoryBloc;
   @override
   void initState() {
-    super.initState();
     _categoryBloc = BlocProvider.of<CategoryBloc>(context)
-      ..add(GetCategories(widget.selectedDateRange));
+      ..add(GetCategories(DateHelper.selectedDateRangeDT(null)));
   }
 
   @override
@@ -45,6 +45,7 @@ class _CategoriesListState extends State<CategoriesList> {
         } else if (state is LoadingFailure) {
           return const Text('Error in categories (custom)');
         } else {
+          print('hert1');
           return const Center(
             child: CircularProgressIndicator(),
           );

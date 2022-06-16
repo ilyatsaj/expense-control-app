@@ -2,6 +2,7 @@ import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../business_logic/blocs/category_bloc/category_bloc.dart';
 import '../../themes.dart';
@@ -17,6 +18,16 @@ class DateFilterWidget extends StatefulWidget {
 
 class _DateFilterWidgetState extends State<DateFilterWidget> {
   @override
+  void initState() {
+    super.initState();
+    initFilter();
+  }
+
+  void initFilter() async {
+    widget.selectedDateRange = await DateHelper.getFilterRange();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
@@ -28,7 +39,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
               style: kGreyTextStyle,
             ),
             Text(
-              DateHelper.selectedDateRange(widget.selectedDateRange),
+              DateHelper.selectedDateRangeString(widget.selectedDateRange),
               style: TextStyle(color: Colors.blue),
             ),
           ],
@@ -41,11 +52,14 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
             currentDate: DateTime.now(),
             saveText: 'Save',
           );
+          final prefs = await SharedPreferences.getInstance();
 
           if (result != null) {
             setState(() {
               widget.selectedDateRange = result;
             });
+            await prefs.setString('filter_start', result.start.toString());
+            await prefs.setString('filter_end', result.end.toString());
           }
           print('${result?.start} - ${result?.end}');
           BlocProvider.of<CategoryBloc>(context).add(GetCategories(result));

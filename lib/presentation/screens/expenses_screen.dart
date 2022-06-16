@@ -1,4 +1,5 @@
 import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
+import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +7,35 @@ import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
 import '../../data/model/category.dart';
 import '../../data/model/expense.dart';
 import '../widgets/create_new_expense_widget.dart';
+import '../widgets/date_filter_widget.dart';
 import '../widgets/expenses_list.dart';
 
-class ExpensesScreen extends StatelessWidget {
+class ExpensesScreen extends StatefulWidget {
   const ExpensesScreen({Key? key, required this.category}) : super(key: key);
   final Category category;
+  @override
+  _ExpensesScreenState createState() => _ExpensesScreenState();
+}
+
+class _ExpensesScreenState extends State<ExpensesScreen> {
+  DateTimeRange? _selectedDateRange;
+
+  @override
+  void initState() {
+    super.initState();
+    initFilter();
+  }
+
+  void initFilter() async {
+    _selectedDateRange = await DateHelper.getFilterRange();
+    print("data tut");
+    print(_selectedDateRange?.start.toString());
+    print(_selectedDateRange?.end.toString());
+  }
+
+// class ExpensesScreen extends StatelessWidget {
+//   const ExpensesScreen({Key? key, required this.category}) : super(key: key);
+//   final Category category;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,7 +47,7 @@ class ExpensesScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             final expense = Expense(
-                categoryId: category.id!,
+                categoryId: widget.category.id!,
                 name: '',
                 description: '',
                 amount: 0,
@@ -35,7 +60,7 @@ class ExpensesScreen extends StatelessWidget {
 
             if (result != null) {
               BlocProvider.of<ExpenseBloc>(context)
-                  .add(AddExpense(category, result));
+                  .add(AddExpense(widget.category, result));
             }
           },
           child: Icon(Icons.add),
@@ -57,9 +82,10 @@ class ExpensesScreen extends StatelessWidget {
                 ],
               ),
             ),
+            DateFilterWidget(selectedDateRange: _selectedDateRange),
             Expanded(
               child: ExpensesList(
-                category: category,
+                category: widget.category,
               ),
             )
           ],

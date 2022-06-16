@@ -1,3 +1,4 @@
+import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:expense_control_app/presentation/widgets/create_new_category_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,7 @@ import '../../data/model/category.dart';
 import '../screens/expenses_screen.dart';
 
 class CategoryTile extends StatelessWidget {
-  CategoryTile({
-    required this.category,
-  });
+  CategoryTile({required this.category});
   final Category category;
 
   @override
@@ -32,7 +31,9 @@ class CategoryTile extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ExpensesScreen(category: category)));
+                  builder: (context) => ExpensesScreen(
+                        category: category,
+                      )));
         },
         child: ListTile(
           leading: category.iconData != null
@@ -63,15 +64,20 @@ class CategoryTile extends StatelessWidget {
                   if (result != null) {
                     BlocProvider.of<CategoryBloc>(context)
                         .add(UpdateCategory(result));
+                    BlocProvider.of<CategoryBloc>(context)
+                        .add(GetCategories(await DateHelper.getFilterRange()));
                   }
                 },
               ),
               IconButton(
                 icon: new Icon(Icons.delete),
                 highlightColor: Colors.grey,
-                onPressed: () {
+                onPressed: () async {
                   BlocProvider.of<CategoryBloc>(context)
                       .add(DeleteCategory(category));
+                  //print(await DateHelper.getFilterRange().stoString());
+                  BlocProvider.of<CategoryBloc>(context)
+                      .add(GetCategories(await DateHelper.getFilterRange()));
                 },
               ),
             ],

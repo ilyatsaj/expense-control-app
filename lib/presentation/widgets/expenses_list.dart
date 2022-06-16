@@ -46,6 +46,7 @@ class _ExpensesListState extends State<ExpensesList> {
         } else if (state is LoadingFailure) {
           return const Text('Error in expenses (custom)');
         } else {
+          print('hert2');
           return const Center(
             child: CircularProgressIndicator(),
           );
