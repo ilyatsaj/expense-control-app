@@ -39,9 +39,11 @@ class ExpenseData {
   ];
 
   late Box<Expense> _expensesHive;
+  late Box<Category> _categoriesHive;
 
   Future<void> init() async {
     _expensesHive = await Hive.openBox<Expense>('expenses');
+    _categoriesHive = await Hive.openBox<Category>('categories');
 
     //await _expensesHive.clear();
     //
@@ -56,7 +58,6 @@ class ExpenseData {
     final expenses = _expensesHive.values
         .where((element) => element.categoryId == category.id)
         .toList();
-
     return expenses;
   }
 
@@ -97,5 +98,12 @@ class ExpenseData {
         .firstWhere((element) => element.id == category.id);
     categoryToUpdate.totalAmount = category.totalAmount - expense.amount;
     await categoryToUpdate.save();
+  }
+
+  Future<Category> getCategoryById(double categoryId) async {
+    _categoriesHive = await Hive.openBox<Category>('categories');
+    final Category category = _categoriesHive.values
+        .firstWhere((element) => element.id == categoryId);
+    return category;
   }
 }

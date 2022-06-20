@@ -25,8 +25,6 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
     _descriptionInputController =
         TextEditingController(text: widget.category?.description ?? '');
     iconDataCodeLocal = widget.category!.iconData;
-    // widget.category ??
-    //     Category(name: '', description: '', totalAmount: 0, dc: DateTime.now());
   }
 
   @override

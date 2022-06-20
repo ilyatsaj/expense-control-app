@@ -1,18 +1,18 @@
 import 'package:expense_control_app/helpers/date_helper.dart';
-import 'package:expense_control_app/presentation/widgets/create_new_category_widget.dart';
+import 'package:expense_control_app/presentation/widgets/category_widgets/create_new_category_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../business_logic/blocs/category_bloc/category_bloc.dart';
-import '../../data/model/category.dart';
-import '../screens/expenses_screen.dart';
+import '../../../business_logic/blocs/category_bloc/category_bloc.dart';
+import '../../../data/model/category.dart';
+import '../../screens/expenses_screen.dart';
 
 class CategoryTile extends StatelessWidget {
-  CategoryTile({required this.category});
+  CategoryTile({required this.category, required this.selectedDateRange});
   final Category category;
-
+  final DateTimeRange selectedDateRange;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -20,12 +20,12 @@ class CategoryTile extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white),
-          side: MaterialStateProperty.all(
-            const BorderSide(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
+          // side: MaterialStateProperty.all(
+          //   const BorderSide(
+          //     color: Colors.grey,
+          //     width: 1,
+          //   ),
+          // ),
         ),
         onPressed: () {
           Navigator.push(
@@ -33,6 +33,7 @@ class CategoryTile extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => ExpensesScreen(
                         category: category,
+                        selectedDateRange: selectedDateRange,
                       )));
         },
         child: ListTile(
@@ -75,16 +76,12 @@ class CategoryTile extends StatelessWidget {
                 onPressed: () async {
                   BlocProvider.of<CategoryBloc>(context)
                       .add(DeleteCategory(category));
-                  //print(await DateHelper.getFilterRange().stoString());
                   BlocProvider.of<CategoryBloc>(context)
                       .add(GetCategories(await DateHelper.getFilterRange()));
                 },
               ),
             ],
           ),
-          // onLongPress: () {
-          //   longPressCallback(name);
-          // },
         ),
       ),
     );

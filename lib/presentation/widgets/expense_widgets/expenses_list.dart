@@ -2,14 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
-import '../../data/model/category.dart';
+import '../../../business_logic/blocs/expense_bloc/expense_bloc.dart';
+import '../../../data/model/category.dart';
+import '../../../helpers/date_helper.dart';
 import 'expense_tile.dart';
 
 class ExpensesList extends StatefulWidget {
   final Category category;
+  final DateTimeRange dateTimeRange;
 
-  const ExpensesList({Key? key, required this.category}) : super(key: key);
+  const ExpensesList(
+      {Key? key, required this.category, required this.dateTimeRange})
+      : super(key: key);
   @override
   _ExpensesListState createState() => _ExpensesListState();
 }
@@ -20,7 +24,7 @@ class _ExpensesListState extends State<ExpensesList> {
   void initState() {
     super.initState();
     _expenseBloc = BlocProvider.of<ExpenseBloc>(context)
-      ..add(GetExpenses(widget.category));
+      ..add(GetExpenses(widget.category, widget.dateTimeRange));
   }
 
   @override
@@ -46,7 +50,6 @@ class _ExpensesListState extends State<ExpensesList> {
         } else if (state is LoadingFailure) {
           return const Text('Error in expenses (custom)');
         } else {
-          print('hert2');
           return const Center(
             child: CircularProgressIndicator(),
           );

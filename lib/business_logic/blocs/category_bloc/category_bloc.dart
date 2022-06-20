@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:expense_control_app/data/data_provider/category_data.dart';
-import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
+import '../../../data/data_provider/filter_date_time_data.dart';
 import '../../../data/model/category.dart';
 
 part 'category_event.dart';
@@ -12,45 +12,17 @@ part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final CategoryData _categoryData = CategoryData();
+  final FilterDateTimeData _filterData = FilterDateTimeData();
 
   CategoryBloc() : super(CategoryInitial()) {
     _categoryData.init();
+    _filterData.init();
     on<GetCategories>((event, emit) async {
-      print('DDD0');
-      emit(Loading());
+      int totalSum = 0;
+      emit(CategoryLoading());
       try {
-        print('DDD1');
         List<Category>? categories = await _categoryData.getAll();
-        print('DDD2');
-        // if (event.dateTimeRange != null) {
-        //   print('DDD3');
-        //   DateTime rangeStart = DateTime.utc(event.dateTimeRange!.start.year,
-        //       event.dateTimeRange!.start.month, event.dateTimeRange!.start.day);
-        //   DateTime rangeEnd = DateTime.utc(event.dateTimeRange!.end.year,
-        //       event.dateTimeRange!.end.month, event.dateTimeRange!.end.day);
-        //
-        //   categories = categories
-        //       .where((element) =>
-        //           DateTime.utc(
-        //                       element.dc.year, element.dc.month, element.dc.day)
-        //                   .compareTo(rangeStart) ==
-        //               0 ||
-        //           DateTime.utc(
-        //                       element.dc.year, element.dc.month, element.dc.day)
-        //                   .compareTo(rangeEnd) ==
-        //               0 ||
-        //           (DateTime.utc(element.dc.year, element.dc.month,
-        //                           element.dc.day)
-        //                       .compareTo(rangeStart) >
-        //                   0 &&
-        //               DateTime.utc(element.dc.year, element.dc.month,
-        //                           element.dc.day)
-        //                       .compareTo(rangeEnd) <
-        //                   0))
-        //       .toList();
-        // }
-        print('DDD3');
-        DateTimeRange? dtr = await DateHelper.getFilterRange();
+        DateTimeRange? dtr = await _filterData.getFilterDateTimeRange();
         if (dtr != null) {
           DateTime rangeStart =
               DateTime.utc(dtr.start.year, dtr.start.month, dtr.start.day);
@@ -77,40 +49,40 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
                           0))
               .toList();
         }
-        emit(Loaded(categories: categories));
+        for (Category c in categories) {
+          totalSum = totalSum + c.totalAmount;
+        }
+        print('totalSum');
+        print(totalSum);
+        emit(CategoryLoaded(
+            categories: categories, timeRange: dtr, totalSum: totalSum));
       } catch (e) {
-        emit(LoadingFailure(error: e.toString()));
+        emit(CategoryLoadingFailure(error: e.toString()));
       }
     });
     on<DeleteCategory>((event, emit) async {
-      emit(Loading());
+      emit(CategoryLoading());
       try {
         await _categoryData.removeCategory(event.category);
-        // List<Category> categories = await _categoryData.getAll();
-        // emit(Loaded(categories: categories));
       } catch (e) {
-        emit(LoadingFailure(error: e.toString()));
+        emit(CategoryLoadingFailure(error: e.toString()));
       }
     });
     on<AddCategory>((event, emit) async {
-      emit(Loading());
+      emit(CategoryLoading());
       try {
         await _categoryData.addCategory(event.category);
-        // List<Category> categories = await _categoryData.getAll();
-        // emit(Loaded(categories: categories));
       } catch (e) {
-        emit(LoadingFailure(error: e.toString()));
+        emit(CategoryLoadingFailure(error: e.toString()));
       }
     });
 
     on<UpdateCategory>((event, emit) async {
-      emit(Loading());
+      emit(CategoryLoading());
       try {
         await _categoryData.updateCategory(event.category);
-        // List<Category> categories = await _categoryData.getAll();
-        // emit(Loaded(categories: categories));
       } catch (e) {
-        emit(LoadingFailure(error: e.toString()));
+        emit(CategoryLoadingFailure(error: e.toString()));
       }
     });
   }

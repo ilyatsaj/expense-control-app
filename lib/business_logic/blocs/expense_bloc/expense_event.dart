@@ -8,7 +8,8 @@ abstract class ExpenseEvent extends Equatable {
 
 class GetExpenses extends ExpenseEvent {
   final Category category;
-  GetExpenses(this.category);
+  final DateTimeRange? dateTimeRange;
+  GetExpenses(this.category, this.dateTimeRange);
 }
 
 class DeleteExpense extends ExpenseEvent {
@@ -29,7 +30,7 @@ class UpdateExpense extends ExpenseEvent {
   UpdateExpense(this.category, this.expense);
 }
 
-// class GetTotalPerCategory extends ExpenseEvent {
-//   final Category category;
-//   GetTotalPerCategory(this.category);
-// }
+class GetCategoryById extends ExpenseEvent {
+  double categoryId;
+  GetCategoryById(this.categoryId);
+}

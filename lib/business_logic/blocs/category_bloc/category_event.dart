@@ -25,3 +25,8 @@ class UpdateCategory extends CategoryEvent {
   final Category category;
   UpdateCategory(this.category);
 }
+
+class GetTotalSumCategories extends CategoryEvent {
+  final DateTimeRange? dateTimeRange;
+  GetTotalSumCategories(this.dateTimeRange);
+}

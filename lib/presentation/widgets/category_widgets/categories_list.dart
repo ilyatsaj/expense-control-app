@@ -2,8 +2,6 @@ import 'package:expense_control_app/business_logic/blocs/category_bloc/category_
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../helpers/date_helper.dart';
 import 'category_tile.dart';
 
 class CategoriesList extends StatefulWidget {
@@ -20,7 +18,7 @@ class _CategoriesListState extends State<CategoriesList> {
   @override
   void initState() {
     _categoryBloc = BlocProvider.of<CategoryBloc>(context)
-      ..add(GetCategories(DateHelper.selectedDateRangeDT(null)));
+      ..add(GetCategories(widget.selectedDateRange));
   }
 
   @override
@@ -33,22 +31,22 @@ class _CategoriesListState extends State<CategoriesList> {
     return BlocBuilder<CategoryBloc, CategoryState>(
       bloc: _categoryBloc,
       builder: (context, state) {
-        if (state is Loaded) {
+        if (state is CategoryLoaded) {
           return ListView.builder(
             itemCount: state.categories!.length,
             itemBuilder: (context, index) {
               return CategoryTile(
                 category: state.categories![index],
+                selectedDateRange: state.timeRange!,
               );
             },
           );
-        } else if (state is LoadingFailure) {
-          return const Text('Error in categories (custom)');
-        } else {
-          print('hert1');
+        } else if (state is CategoryLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
+        } else {
+          return const Text('Error in categories (custom)');
         }
       },
     );

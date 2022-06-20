@@ -5,14 +5,19 @@ abstract class CategoryState {}
 
 class CategoryInitial extends CategoryState {}
 
-class Loading extends CategoryState {}
+class CategoryLoading extends CategoryState {}
 
-class Loaded extends CategoryState {
-  Loaded({required this.categories});
+class CategoryLoaded extends CategoryState {
+  CategoryLoaded(
+      {required this.categories,
+      required this.timeRange,
+      required this.totalSum});
   List<Category>? categories;
+  DateTimeRange? timeRange;
+  int? totalSum;
 }
 
-class LoadingFailure extends CategoryState {
+class CategoryLoadingFailure extends CategoryState {
   final String error;
-  LoadingFailure({required this.error});
+  CategoryLoadingFailure({required this.error});
 }

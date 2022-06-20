@@ -67,7 +67,6 @@ class CategoryData {
     categoryToUpdate.description = category.description;
     categoryToUpdate.iconData = category.iconData;
     await categoryToUpdate.save();
-    getAll();
   }
 
   Future<void> removeCategory(Category category) async {

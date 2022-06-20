@@ -17,9 +17,6 @@ class DateHelper {
   }
 
   static String selectedDateRangeString(DateTimeRange? selectedDateRange) {
-    print('nen');
-    print(selectedDateRange?.start.toString());
-    //DateTimeRange? dtr = await getFilterRange();
     if (selectedDateRange != null) {
       return "${DateFormat.yMMMMd().format(selectedDateRange.start)} - ${DateFormat.yMMMMd().format(selectedDateRange.end)}";
     } else {
@@ -31,10 +28,7 @@ class DateHelper {
     if (selectedDateRange != null) {
       return selectedDateRange;
     } else {
-      return DateTimeRange(
-          start: DateTime.now(),
-          end: DateTime
-              .now()); // DateFormat.yMMMMd().format(DateTime(2022, 06, 06))} - ${DateFormat.yMMMMd().format(DateTime.now())}";
+      return DateTimeRange(start: DateTime.now(), end: DateTime.now());
     }
   }
 }

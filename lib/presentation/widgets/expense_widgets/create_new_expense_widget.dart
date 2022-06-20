@@ -2,18 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../data/model/expense.dart';
+import '../../../data/model/expense.dart';
 
-class CreateNewExpenseWidget extends StatefulWidget {
+class CreateUpdateExpenseWidget extends StatefulWidget {
   final Expense? expense;
 
-  const CreateNewExpenseWidget({Key? key, this.expense}) : super(key: key);
+  const CreateUpdateExpenseWidget({Key? key, this.expense}) : super(key: key);
 
   @override
-  _CreateNewExpenseWidgetState createState() => _CreateNewExpenseWidgetState();
+  _CreateUpdateExpenseWidgetState createState() =>
+      _CreateUpdateExpenseWidgetState();
 }
 
-class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
+class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
   TextEditingController? _nameInputController;
   TextEditingController? _descriptionInputController;
   TextEditingController? _amountInputController;
@@ -29,7 +30,6 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
     _amountInputController =
         TextEditingController(text: widget.expense?.amount.toString() ?? '');
     _iconDataCodeLocal = widget.expense!.iconData;
-    // widget.expense ?? Category(name: '', description: '', totalAmount: 0);
   }
 
   @override
@@ -73,6 +73,7 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
                 child: _showIconGrid())),
         ElevatedButton(
             onPressed: () async {
+              print('entered create upd expense');
               final expense = Expense(
                   id: widget.expense?.id,
                   categoryId: widget.expense!.categoryId,
@@ -80,7 +81,7 @@ class _CreateNewExpenseWidgetState extends State<CreateNewExpenseWidget> {
                   description: _descriptionInputController!.text,
                   amount: int.parse(_amountInputController!.text),
                   iconData: _iconDataCodeLocal,
-                  dc: DateTime.now());
+                  dc: widget.expense!.dc);
               setState(() {
                 _nameInputController!.text.isEmpty
                     ? _validate = true

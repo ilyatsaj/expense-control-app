@@ -1,41 +1,33 @@
 import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
-import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
 import '../../data/model/category.dart';
 import '../../data/model/expense.dart';
-import '../widgets/create_new_expense_widget.dart';
-import '../widgets/date_filter_widget.dart';
-import '../widgets/expenses_list.dart';
+import '../widgets/expense_widgets/create_new_expense_widget.dart';
+import '../widgets/date_filter_expenses_widget.dart';
+import '../widgets/expense_widgets/expenses_list.dart';
 
 class ExpensesScreen extends StatefulWidget {
-  const ExpensesScreen({Key? key, required this.category}) : super(key: key);
+  const ExpensesScreen(
+      {Key? key, required this.category, required this.selectedDateRange})
+      : super(key: key);
   final Category category;
+  final DateTimeRange selectedDateRange;
   @override
   _ExpensesScreenState createState() => _ExpensesScreenState();
 }
 
 class _ExpensesScreenState extends State<ExpensesScreen> {
-  DateTimeRange? _selectedDateRange;
-
   @override
   void initState() {
     super.initState();
-    initFilter();
+
+    BlocProvider.of<ExpenseBloc>(context)
+        .add(GetExpenses(widget.category, widget.selectedDateRange));
   }
 
-  void initFilter() async {
-    _selectedDateRange = await DateHelper.getFilterRange();
-    print("data tut");
-    print(_selectedDateRange?.start.toString());
-    print(_selectedDateRange?.end.toString());
-  }
-
-// class ExpensesScreen extends StatelessWidget {
-//   const ExpensesScreen({Key? key, required this.category}) : super(key: key);
-//   final Category category;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,7 +47,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             final result = await showDialog<Expense>(
                 context: context,
                 builder: (context) => Dialog(
-                      child: CreateNewExpenseWidget(expense: expense),
+                      child: CreateUpdateExpenseWidget(expense: expense),
                     ));
 
             if (result != null) {
@@ -67,13 +59,14 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         ),
         body: Column(
           children: [
+            Text(widget.category.name),
             Container(
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () {
                       BlocProvider.of<CategoryBloc>(context)
-                          .add(GetCategories(null));
+                          .add(GetCategories(widget.selectedDateRange));
                       Navigator.pop(context);
                     },
                     icon: Icon(Icons.arrow_back_ios),
@@ -82,10 +75,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 ],
               ),
             ),
-            DateFilterWidget(selectedDateRange: _selectedDateRange),
+            DateFilterExpensesWidget(
+                selectedDateRange: widget.selectedDateRange),
             Expanded(
               child: ExpensesList(
                 category: widget.category,
+                dateTimeRange: widget.selectedDateRange,
               ),
             )
           ],
