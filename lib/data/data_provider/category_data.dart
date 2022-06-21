@@ -33,7 +33,6 @@ class CategoryData {
     _categoriesHive = await Hive.openBox<Category>('categories');
 
     // await _categoriesHive.clear();
-    // print('hereeeeee');
     // await _categoriesHive.add(_categories[0]);
     // await _categoriesHive.add(_categories[1]);
     // await _categoriesHive.add(_categories[2]);

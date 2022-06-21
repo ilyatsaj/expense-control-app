@@ -15,8 +15,8 @@ class CreateNewCategoryWidget extends StatefulWidget {
 class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
   TextEditingController? _nameInputController;
   TextEditingController? _descriptionInputController;
-  bool isPressed = false;
   int? iconDataCodeLocal;
+  bool _validate = false;
   @override
   void initState() {
     super.initState();
@@ -28,16 +28,28 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
   }
 
   @override
+  void dispose() {
+    _nameInputController?.dispose();
+    _descriptionInputController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Category name"),
         TextField(
           controller: _nameInputController,
+          decoration: InputDecoration(
+            labelText: 'Category name',
+            errorText: _validate ? 'Value Can\'t Be Empty' : null,
+          ),
         ),
-        Text("Category description"),
         TextField(
           controller: _descriptionInputController,
+          decoration: const InputDecoration(
+            labelText: 'Description',
+          ),
         ),
         Expanded(
             child: Container(
@@ -52,7 +64,12 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
                   totalAmount: 0,
                   iconData: iconDataCodeLocal,
                   dc: DateTime.now());
-              Navigator.of(context).pop(category);
+              setState(() {
+                _nameInputController!.text.isEmpty
+                    ? _validate = true
+                    : _validate = false;
+              });
+              if (!_validate) Navigator.of(context).pop(category);
             },
             child: Text('Save'))
       ],

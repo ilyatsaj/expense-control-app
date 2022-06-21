@@ -24,8 +24,8 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   void initState() {
     super.initState();
 
-    BlocProvider.of<ExpenseBloc>(context)
-        .add(GetExpenses(widget.category, widget.selectedDateRange));
+    // BlocProvider.of<ExpenseBloc>(context)
+    //     .add(GetExpenses(widget.category, widget.selectedDateRange));
   }
 
   @override
@@ -48,11 +48,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               builder: (context) => Dialog(
                     child: CreateUpdateExpenseWidget(expense: expense),
                   ));
-          print('here');
           if (result != null) {
-            print('here2');
-            print(widget.category.name);
-            print(result.name);
             BlocProvider.of<ExpenseBloc>(context)
                 .add(AddExpense(widget.category, result));
             BlocProvider.of<ExpenseBloc>(context)

@@ -9,8 +9,9 @@ class FilterDateTimeData {
   late Box<FilterDateTime> _filterDateTimeHive;
 
   Future<void> init() async {
-    _filterDateTimeHive = await Hive.openBox<FilterDateTime>('filterDateTime');
-
+    _filterDateTimeHive =
+        await Hive.openBox<FilterDateTime>('filter_date_time');
+    print('init end');
     // await _filterDateTimeHive.clear();
     //
     // final filter =
@@ -19,25 +20,18 @@ class FilterDateTimeData {
   }
 
   Future<DateTimeRange> getFilterDateTimeRange() async {
-    print('here we go again');
     _filterDateTimeHive =
         await Hive.openBox<FilterDateTime>('filter_date_time');
-    print('here we initiated');
-    //print(_filterDateTimeHive.values.length);
     final DateTime filterStart;
     final DateTime filterEnd;
     //await Future.delayed(Duration(seconds: 1));
-    print(_filterDateTimeHive.values.isNotEmpty);
     if (_filterDateTimeHive.values.isNotEmpty) {
-      //print('QQQQQ' + _filterDateTimeHive.values.length.toString());
       filterStart = _filterDateTimeHive.values.first.startDate!;
-      print('here we filtStart');
       filterEnd = _filterDateTimeHive.values.first.endTime!;
     } else {
       filterStart = DateTime.now();
       filterEnd = DateTime.now();
     }
-    print('here we filtEnd');
     final dtr = DateTimeRange(start: filterStart, end: filterEnd);
     return dtr;
   }

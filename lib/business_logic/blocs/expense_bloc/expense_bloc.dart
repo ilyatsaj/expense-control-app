@@ -17,7 +17,6 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
   ExpenseBloc() : super(ExpenseInitial()) {
     on<GetExpenses>((event, emit) async {
-      print('are we here');
       _expenseData.init();
       _filterData.init();
       int totalSum = 0;
@@ -25,7 +24,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       try {
         List<Expense>? expenses = await _expenseData.getAll(event.category);
         DateTimeRange? dtr = await _filterData.getFilterDateTimeRange();
-        if (dtr != null) {
+        if (dtr != null && expenses != null) {
           DateTime rangeStart =
               DateTime.utc(dtr.start.year, dtr.start.month, dtr.start.day);
           DateTime rangeEnd =
@@ -50,8 +49,6 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
                               .compareTo(rangeEnd) <
                           0))
               .toList();
-        }
-        if (expenses.isNotEmpty) {
           for (Expense e in expenses) {
             totalSum = totalSum + e.amount;
           }
@@ -72,11 +69,8 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
     });
     on<AddExpense>((event, emit) async {
       emit(ExpenseLoading());
-      print('try to enter try');
       try {
-        print('try to add');
         await _expenseData.addExpense(event.expense, event.category);
-        print('added');
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
       }

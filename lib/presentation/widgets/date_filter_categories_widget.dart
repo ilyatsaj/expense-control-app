@@ -39,19 +39,12 @@ class _DateFilterCategoriesWidgetState
             BlocBuilder<FilterDateTimeBloc, FilterDateTimeState>(
                 builder: (context, state) {
               if (state is FilterLoaded) {
-                // print('____!!:');
-                // print(state.dateTimeRange?.start);
-                // print(state.dateTimeRange?.end);
                 return Text(
                     DateHelper.dateRangeToFormattedString(state.dateTimeRange),
                     style: TextStyle(color: Colors.blue));
               } else if (state is FilterLoading) {
-                // return const Center(
-                //   child: CircularProgressIndicator(),
-                // );
                 return Container();
               } else {
-                print('this 3');
                 return const Text(
                     'Error in filters (date_filter_categories_widget)');
               }

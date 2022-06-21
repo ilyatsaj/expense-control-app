@@ -13,10 +13,7 @@ class FilterDateTimeBloc
     on<GetFilterDateTime>((event, emit) async {
       emit(FilterLoading());
       try {
-        print('opacha');
         DateTimeRange dtr = await _filterData.getFilterDateTimeRange();
-        print('dtr in filter');
-        print(dtr);
         emit(FilterLoaded(dateTimeRange: dtr));
       } catch (e) {
         emit(FilterLoadingFailure(error: e.toString()));

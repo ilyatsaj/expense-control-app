@@ -18,6 +18,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<FilterDateTimeBloc>(context).add(GetFilterDateTime());
   }
 
   @override

@@ -63,8 +63,8 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
                 currentDate: DateTime.now(),
                 saveText: 'Save',
               );
-              BlocProvider.of<ExpenseBloc>(context)
-                  .add(GetExpenses(state.category, result));
+              // BlocProvider.of<ExpenseBloc>(context)
+              //     .add(GetExpenses(state.category, result));
               BlocProvider.of<FilterDateTimeBloc>(context)
                   .add(SetFilterDateTime(result!));
               BlocProvider.of<FilterDateTimeBloc>(context)
