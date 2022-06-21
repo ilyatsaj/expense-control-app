@@ -43,7 +43,7 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
                     return Text(
                         DateHelper.dateRangeToFormattedString(
                             state.dateTimeRange),
-                        style: TextStyle(color: Colors.amber[900]));
+                        style: TextStyle(color: Colors.amber[600]));
                   } else if (state is FilterLoading) {
                     return const Center(
                       child: LinearProgressIndicator(),

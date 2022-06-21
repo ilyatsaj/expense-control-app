@@ -45,8 +45,8 @@ class _DateFilterCategoriesWidgetState
                     style: TextStyle(
                         color: ExpenseControlApp.themeNotifier.value ==
                                 ThemeMode.light
-                            ? Colors.amber[900]
-                            : Colors.cyan));
+                            ? Colors.amber[600]
+                            : Color(0xFF64FFDA)));
               } else if (state is FilterLoading) {
                 return Container();
               } else {

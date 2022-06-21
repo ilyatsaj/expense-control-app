@@ -135,7 +135,7 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
           color: _iconDataCodeLocal == null
               ? Colors.grey[600]
               : _iconDataCodeLocal == iconData.codePoint
-                  ? Colors.amber[900]
+                  ? Colors.amber[600]
                   : Colors.grey[600],
           onPressed: () {
             setState(() {
