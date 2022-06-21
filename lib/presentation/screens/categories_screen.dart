@@ -64,8 +64,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               if (state is CategoryLoaded) {
                 return Container(
                     margin: EdgeInsets.only(
-                        top: 10, bottom: 80, left: 30, right: 20),
-                    child: Text('Total: ${state.totalSum} \$'));
+                        top: 10, bottom: 70, left: 30, right: 20),
+                    child: Text(
+                      'Total: ${state.totalSum} \$',
+                      style: TextStyle(fontSize: 20),
+                    ));
               } else if (state is CategoryLoading) {
                 return Container();
               } else {

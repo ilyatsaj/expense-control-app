@@ -30,7 +30,8 @@ void main() async {
 
 class ExpenseControlApp extends StatelessWidget {
   const ExpenseControlApp({Key? key}) : super(key: key);
-
+  static final ValueNotifier<ThemeMode> themeNotifier =
+      ValueNotifier(ThemeMode.light);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -40,14 +41,36 @@ class ExpenseControlApp extends StatelessWidget {
         BlocProvider(create: (context) => ExpenseBloc()),
         BlocProvider(create: (context) => FilterDateTimeBloc()),
       ],
-      child: MaterialApp(
-        title: 'Expense control',
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text('Expense control'),
-            ),
-            body: CategoriesScreen()),
-      ),
+      child: ValueListenableBuilder<ThemeMode>(
+          valueListenable: themeNotifier,
+          builder: (_, ThemeMode currentMode, __) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(primarySwatch: Colors.amber),
+              darkTheme: ThemeData.dark(),
+              themeMode: currentMode,
+              title: 'Expense Control',
+              home: Scaffold(
+                  appBar: AppBar(
+                    title: Text('Expense Control'),
+                    actions: [
+                      IconButton(
+                          icon: Icon(ExpenseControlApp.themeNotifier.value ==
+                                  ThemeMode.light
+                              ? Icons.dark_mode
+                              : Icons.light_mode),
+                          onPressed: () {
+                            ExpenseControlApp.themeNotifier.value =
+                                ExpenseControlApp.themeNotifier.value ==
+                                        ThemeMode.light
+                                    ? ThemeMode.dark
+                                    : ThemeMode.light;
+                          })
+                    ],
+                  ),
+                  body: CategoriesScreen()),
+            );
+          }),
     );
   }
 }

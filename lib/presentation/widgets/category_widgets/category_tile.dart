@@ -18,7 +18,7 @@ class CategoryTile extends StatelessWidget {
       create: (context) => CategoryBloc(),
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.white),
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
           elevation: MaterialStateProperty.all<double>(0),
         ),
         onPressed: () {

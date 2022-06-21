@@ -33,7 +33,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Expense control'),
+        title: Text('Expense Control'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -94,10 +94,13 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 return Container(
                     margin: EdgeInsets.only(
                         top: 10,
-                        bottom: 80,
+                        bottom: 70,
                         left: 30,
                         right: 20), //symmetric(horizontal: 30, vertical: 70),
-                    child: Text('Total: ${state.totalSum} \$'));
+                    child: Text(
+                      'Total: ${state.totalSum} \$',
+                      style: TextStyle(fontSize: 20),
+                    ));
               } else if (state is CategoryLoading) {
                 return CircularProgressIndicator();
               } else {

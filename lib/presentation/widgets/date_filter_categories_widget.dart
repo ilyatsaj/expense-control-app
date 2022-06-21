@@ -1,5 +1,6 @@
 import 'package:expense_control_app/business_logic/blocs/filter_date_time_bloc/filter_date_time_bloc.dart';
 import 'package:expense_control_app/helpers/date_helper.dart';
+import 'package:expense_control_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,11 @@ class _DateFilterCategoriesWidgetState
               if (state is FilterLoaded) {
                 return Text(
                     DateHelper.dateRangeToFormattedString(state.dateTimeRange),
-                    style: TextStyle(color: Colors.blue));
+                    style: TextStyle(
+                        color: ExpenseControlApp.themeNotifier.value ==
+                                ThemeMode.light
+                            ? Colors.amber[900]
+                            : Colors.cyan));
               } else if (state is FilterLoading) {
                 return Container();
               } else {
@@ -68,7 +73,3 @@ class _DateFilterCategoriesWidgetState
     );
   }
 }
-
-// Text(
-// _filterBloc,
-// style: TextStyle(color: Colors.blue),

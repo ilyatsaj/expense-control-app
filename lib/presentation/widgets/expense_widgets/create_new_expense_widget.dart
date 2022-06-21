@@ -72,6 +72,9 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
                 padding: EdgeInsets.symmetric(vertical: 12.0),
                 child: _showIconGrid())),
         ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+            ),
             onPressed: () async {
               final expense = Expense(
                   id: widget.expense?.id,
@@ -132,7 +135,7 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
           color: _iconDataCodeLocal == null
               ? Colors.grey[600]
               : _iconDataCodeLocal == iconData.codePoint
-                  ? Colors.orange
+                  ? Colors.amber[900]
                   : Colors.grey[600],
           onPressed: () {
             setState(() {
