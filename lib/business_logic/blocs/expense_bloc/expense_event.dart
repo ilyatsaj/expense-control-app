@@ -30,7 +30,7 @@ class UpdateExpense extends ExpenseEvent {
   UpdateExpense(this.category, this.expense);
 }
 
-class GetCategoryById extends ExpenseEvent {
-  double categoryId;
-  GetCategoryById(this.categoryId);
+class GetTotalSumExpenses extends ExpenseEvent {
+  final DateTimeRange? dateTimeRange;
+  GetTotalSumExpenses(this.dateTimeRange);
 }

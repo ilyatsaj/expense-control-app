@@ -25,11 +25,11 @@ void main() async {
   _categoryData.init;
   _expenseData.init;
   _filterDateTimeData.init;
-  runApp(const MyApp());
+  runApp(const ExpenseControlApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class ExpenseControlApp extends StatelessWidget {
+  const ExpenseControlApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override

@@ -45,7 +45,7 @@ class ExpenseData {
     _expensesHive = await Hive.openBox<Expense>('expenses');
     _categoriesHive = await Hive.openBox<Category>('categories');
 
-    //await _expensesHive.clear();
+    // await _expensesHive.clear();
     //
     // await _expensesHive.add(_expenses[0]);
     // await _expensesHive.add(_expenses[1]);
@@ -54,7 +54,7 @@ class ExpenseData {
   }
 
   Future<List<Expense>> getAll(Category category) async {
-    await Future.delayed(Duration(seconds: 1));
+    //await Future.delayed(Duration(seconds: 1));
     final expenses = _expensesHive.values
         .where((element) => element.categoryId == category.id)
         .toList();

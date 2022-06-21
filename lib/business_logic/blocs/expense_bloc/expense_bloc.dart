@@ -17,9 +17,11 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
   ExpenseBloc() : super(ExpenseInitial()) {
     on<GetExpenses>((event, emit) async {
+      print('are we here');
       _expenseData.init();
       _filterData.init();
-      emit(Loading());
+      int totalSum = 0;
+      emit(ExpenseLoading());
       try {
         List<Expense>? expenses = await _expenseData.getAll(event.category);
         DateTimeRange? dtr = await _filterData.getFilterDateTimeRange();
@@ -49,42 +51,41 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
                           0))
               .toList();
         }
-        emit(Loaded(expenses: expenses, category: event.category));
+        if (expenses.isNotEmpty) {
+          for (Expense e in expenses) {
+            totalSum = totalSum + e.amount;
+          }
+        }
+        emit(ExpenseLoaded(
+            expenses: expenses, category: event.category, totalSum: totalSum));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
       }
     });
     on<DeleteExpense>((event, emit) async {
-      emit(Loading());
+      emit(ExpenseLoading());
       try {
         await _expenseData.removeExpense(event.expense, event.category);
-        List<Expense> expenses = await _expenseData.getAll(event.category);
-        emit(Loaded(expenses: expenses, category: event.category));
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
       }
     });
     on<AddExpense>((event, emit) async {
-      emit(Loading());
+      emit(ExpenseLoading());
+      print('try to enter try');
       try {
+        print('try to add');
         await _expenseData.addExpense(event.expense, event.category);
+        print('added');
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
       }
     });
 
     on<UpdateExpense>((event, emit) async {
-      emit(Loading());
+      emit(ExpenseLoading());
       try {
         await _expenseData.updateExpense(event.expense);
-      } catch (e) {
-        emit(LoadingFailure(error: e.toString()));
-      }
-    });
-
-    on<GetCategoryById>((event, emit) async {
-      try {
-        final category = await _expenseData.getCategoryById(event.categoryId);
       } catch (e) {
         emit(LoadingFailure(error: e.toString()));
       }

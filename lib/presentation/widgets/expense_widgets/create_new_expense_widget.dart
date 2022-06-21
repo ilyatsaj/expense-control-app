@@ -73,7 +73,6 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
                 child: _showIconGrid())),
         ElevatedButton(
             onPressed: () async {
-              print('entered create upd expense');
               final expense = Expense(
                   id: widget.expense?.id,
                   categoryId: widget.expense!.categoryId,

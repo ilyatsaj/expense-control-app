@@ -5,15 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
-import '../../data/model/category.dart';
 import '../../themes.dart';
 
 class DateFilterExpensesWidget extends StatefulWidget {
-  DateTimeRange? selectedDateRange;
-  Category? category;
-  DateFilterExpensesWidget(
-      {required this.selectedDateRange, this.category, Key? key})
-      : super(key: key);
+  DateFilterExpensesWidget({Key? key}) : super(key: key);
 
   @override
   _DateFilterExpensesWidgetState createState() =>
@@ -31,8 +26,7 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
     return Container(
       alignment: Alignment.topLeft,
       child: BlocBuilder<ExpenseBloc, ExpenseState>(builder: (context, state) {
-        print('enterd date filter widget');
-        if (state is Loaded) {
+        if (state is ExpenseLoaded) {
           return InkWell(
             child: Row(
               children: [
@@ -47,14 +41,16 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
                     builder: (context, state) {
                   if (state is FilterLoaded) {
                     return Text(
-                        DateHelper.selectedDateRangeString(state.dateTimeRange),
+                        DateHelper.dateRangeToFormattedString(
+                            state.dateTimeRange),
                         style: TextStyle(color: Colors.blue));
                   } else if (state is FilterLoading) {
                     return const Center(
                       child: LinearProgressIndicator(),
                     );
                   } else {
-                    return const Text('Error in filters (custom)');
+                    return const Text(
+                        'Error in filters (date_filter_expenses_widget)');
                   }
                 }),
               ],
@@ -76,7 +72,7 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
               // Navigator.pop(context);
             },
           );
-        } else if (state is Loading) {
+        } else if (state is ExpenseLoading) {
           return LinearProgressIndicator();
         } else {
           return const Text('Error in get category for filter');

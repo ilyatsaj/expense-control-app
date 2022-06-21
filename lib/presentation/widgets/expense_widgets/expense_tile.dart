@@ -5,16 +5,16 @@ import 'package:intl/intl.dart';
 import '../../../business_logic/blocs/expense_bloc/expense_bloc.dart';
 import '../../../data/model/category.dart';
 import '../../../data/model/expense.dart';
-import '../../../helpers/date_helper.dart';
 import 'create_new_expense_widget.dart';
 
 class ExpenseTile extends StatelessWidget {
-  ExpenseTile({
-    required this.category,
-    required this.expense,
-  });
+  ExpenseTile(
+      {required this.category,
+      required this.expense,
+      required this.dateTimeRange});
   final Expense expense;
   final Category category;
+  final DateTimeRange dateTimeRange;
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,8 @@ class ExpenseTile extends StatelessWidget {
               if (result != null) {
                 BlocProvider.of<ExpenseBloc>(context)
                     .add(UpdateExpense(category, result));
-                BlocProvider.of<ExpenseBloc>(context).add(
-                    GetExpenses(category, await DateHelper.getFilterRange()));
+                BlocProvider.of<ExpenseBloc>(context)
+                    .add(GetExpenses(category, dateTimeRange));
               }
             },
           ),
@@ -57,8 +57,8 @@ class ExpenseTile extends StatelessWidget {
             onPressed: () async {
               BlocProvider.of<ExpenseBloc>(context)
                   .add(DeleteExpense(expense, category));
-              BlocProvider.of<ExpenseBloc>(context).add(
-                  GetExpenses(category, await DateHelper.getFilterRange()));
+              BlocProvider.of<ExpenseBloc>(context)
+                  .add(GetExpenses(category, dateTimeRange));
             },
           ),
         ]),

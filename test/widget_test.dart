@@ -13,7 +13,7 @@ import 'package:expense_control_app/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const ExpenseControlApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
@@ -26,5 +26,21 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+  });
+
+  testWidgets("Ad categories widget test", (WidgetTester tester) async {
+    await tester.pumpWidget(ExpenseControlApp());
+    var textField = find.byType(TextField);
+    expect(textField, findsOneWidget);
+    await tester.enterText(textField, 'Flutter Devs');
+    expect(find.text('Flutter Devs'), findsOneWidget);
+    print('Flutter Devs');
+    var button = find.text("Reverse Text");
+    expect(button, findsOneWidget);
+    print('Reverse Text');
+    await tester.tap(button);
+    await tester.pump();
+    expect(find.text("sveD rettulF"), findsOneWidget);
+    print('sveD rettulF');
   });
 }

@@ -23,6 +23,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       try {
         List<Category>? categories = await _categoryData.getAll();
         DateTimeRange? dtr = await _filterData.getFilterDateTimeRange();
+        print(dtr);
         if (dtr != null) {
           DateTime rangeStart =
               DateTime.utc(dtr.start.year, dtr.start.month, dtr.start.day);
@@ -49,11 +50,15 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
                           0))
               .toList();
         }
-        for (Category c in categories) {
-          totalSum = totalSum + c.totalAmount;
+        print('ooop');
+        //print('1' + categories.first.name);
+        if (categories.isNotEmpty) {
+          for (Category c in categories) {
+            totalSum = totalSum + c.totalAmount;
+          }
         }
-        print('totalSum');
-        print(totalSum);
+        print('total sum: ' + totalSum.toString());
+        //print(categories.first.name);
         emit(CategoryLoaded(
             categories: categories, timeRange: dtr, totalSum: totalSum));
       } catch (e) {

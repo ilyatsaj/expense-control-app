@@ -1,4 +1,3 @@
-import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:expense_control_app/presentation/widgets/category_widgets/create_new_category_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +19,7 @@ class CategoryTile extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white),
-          // side: MaterialStateProperty.all(
-          //   const BorderSide(
-          //     color: Colors.grey,
-          //     width: 1,
-          //   ),
-          // ),
+          elevation: MaterialStateProperty.all<double>(0),
         ),
         onPressed: () {
           Navigator.push(
@@ -48,7 +42,6 @@ class CategoryTile extends StatelessWidget {
               Text('${category.totalAmount} \$'),
             ],
           ),
-          //subtitle: Text(category.description),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -66,7 +59,7 @@ class CategoryTile extends StatelessWidget {
                     BlocProvider.of<CategoryBloc>(context)
                         .add(UpdateCategory(result));
                     BlocProvider.of<CategoryBloc>(context)
-                        .add(GetCategories(await DateHelper.getFilterRange()));
+                        .add(GetCategories(selectedDateRange));
                   }
                 },
               ),
@@ -77,7 +70,7 @@ class CategoryTile extends StatelessWidget {
                   BlocProvider.of<CategoryBloc>(context)
                       .add(DeleteCategory(category));
                   BlocProvider.of<CategoryBloc>(context)
-                      .add(GetCategories(await DateHelper.getFilterRange()));
+                      .add(GetCategories(selectedDateRange));
                 },
               ),
             ],

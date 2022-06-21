@@ -5,15 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/category_bloc/category_bloc.dart';
-import '../../data/model/category.dart';
 import '../../themes.dart';
 
 class DateFilterCategoriesWidget extends StatefulWidget {
-  DateTimeRange? selectedDateRange;
-  Category? category;
-  DateFilterCategoriesWidget(
-      {required this.selectedDateRange, this.category, Key? key})
-      : super(key: key);
+  DateFilterCategoriesWidget({Key? key}) : super(key: key);
 
   @override
   _DateFilterCategoriesWidgetState createState() =>
@@ -44,15 +39,21 @@ class _DateFilterCategoriesWidgetState
             BlocBuilder<FilterDateTimeBloc, FilterDateTimeState>(
                 builder: (context, state) {
               if (state is FilterLoaded) {
+                // print('____!!:');
+                // print(state.dateTimeRange?.start);
+                // print(state.dateTimeRange?.end);
                 return Text(
-                    DateHelper.selectedDateRangeString(state.dateTimeRange),
+                    DateHelper.dateRangeToFormattedString(state.dateTimeRange),
                     style: TextStyle(color: Colors.blue));
               } else if (state is FilterLoading) {
-                return const Center(
-                  child: LinearProgressIndicator(),
-                );
+                // return const Center(
+                //   child: CircularProgressIndicator(),
+                // );
+                return Container();
               } else {
-                return const Text('Error in filters (custom)');
+                print('this 3');
+                return const Text(
+                    'Error in filters (date_filter_categories_widget)');
               }
             }),
           ],

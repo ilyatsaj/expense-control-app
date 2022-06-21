@@ -32,8 +32,8 @@ class CategoryData {
   Future<void> init() async {
     _categoriesHive = await Hive.openBox<Category>('categories');
 
-    //await _categoriesHive.clear();
-    //
+    // await _categoriesHive.clear();
+    // print('hereeeeee');
     // await _categoriesHive.add(_categories[0]);
     // await _categoriesHive.add(_categories[1]);
     // await _categoriesHive.add(_categories[2]);
@@ -41,7 +41,7 @@ class CategoryData {
 
   Future<List<Category>> getAll() async {
     _categoriesHive = await Hive.openBox<Category>('categories');
-    await Future.delayed(Duration(seconds: 1));
+    //await Future.delayed(Duration(seconds: 1));
     final categories = _categoriesHive.values;
 
     return categories.toList();

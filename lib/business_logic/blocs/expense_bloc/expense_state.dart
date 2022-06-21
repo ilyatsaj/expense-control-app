@@ -5,12 +5,14 @@ abstract class ExpenseState {}
 
 class ExpenseInitial extends ExpenseState {}
 
-class Loading extends ExpenseState {}
+class ExpenseLoading extends ExpenseState {}
 
-class Loaded extends ExpenseState {
-  Loaded({required this.expenses, required this.category});
+class ExpenseLoaded extends ExpenseState {
+  ExpenseLoaded(
+      {required this.expenses, required this.category, required this.totalSum});
   List<Expense>? expenses;
   Category category;
+  int? totalSum;
 }
 
 class LoadingFailure extends ExpenseState {

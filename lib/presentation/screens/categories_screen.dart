@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../business_logic/blocs/filter_date_time_bloc/filter_date_time_bloc.dart';
 import '../../data/model/category.dart';
-import '../../helpers/date_helper.dart';
 import '../widgets/category_widgets/categories_list.dart';
 import '../widgets/category_widgets/create_new_category_widget.dart';
 import '../widgets/date_filter_categories_widget.dart';
@@ -15,13 +14,10 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   DateTimeRange? _selectedDateRange;
-  FilterDateTimeBloc? _filterBloc;
 
   @override
   void initState() {
     super.initState();
-    _filterBloc = BlocProvider.of<FilterDateTimeBloc>(context)
-      ..add(GetFilterDateTime());
   }
 
   @override
@@ -43,7 +39,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           if (result != null) {
             BlocProvider.of<CategoryBloc>(context).add(AddCategory(result));
             BlocProvider.of<CategoryBloc>(context)
-                .add(GetCategories(await DateHelper.getFilterRange()));
+                .add(GetCategories(_selectedDateRange));
           }
         },
         child: Icon(Icons.add),
@@ -56,20 +52,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             alignment: Alignment.topLeft,
             child: Text('Categories'),
           ),
-          BlocBuilder<FilterDateTimeBloc, FilterDateTimeState>(
-              bloc: _filterBloc,
-              builder: (context, state) {
-                if (state is FilterLoaded) {
-                  return DateFilterCategoriesWidget(
-                      selectedDateRange: state.dateTimeRange);
-                } else if (state is FilterLoading) {
-                  return const Center(
-                    child: LinearProgressIndicator(),
-                  );
-                } else {
-                  return const Text('Error in filters (custom)');
-                }
-              }),
+          DateFilterCategoriesWidget(),
           Expanded(
             child: CategoriesList(
               selectedDateRange: _selectedDateRange,
@@ -80,15 +63,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               if (state is CategoryLoaded) {
                 return Container(
                     margin: EdgeInsets.only(
-                        top: 10,
-                        bottom: 80,
-                        left: 30,
-                        right: 20), //symmetric(horizontal: 30, vertical: 70),
+                        top: 10, bottom: 80, left: 30, right: 20),
                     child: Text('Total: ${state.totalSum} \$'));
               } else if (state is CategoryLoading) {
-                return CircularProgressIndicator();
+                return Container();
               } else {
-                return const Text('Error in filters (custom)');
+                return const Text('Error in total sum (custom)');
               }
             },
           ),

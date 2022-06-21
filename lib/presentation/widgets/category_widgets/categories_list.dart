@@ -46,7 +46,7 @@ class _CategoriesListState extends State<CategoriesList> {
             child: CircularProgressIndicator(),
           );
         } else {
-          return const Text('Error in categories (custom)');
+          return const Text('No items to display');
         }
       },
     );
