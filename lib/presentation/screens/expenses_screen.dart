@@ -2,12 +2,15 @@ import 'package:expense_control_app/business_logic/blocs/category_bloc/category_
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
 import '../../data/model/category.dart';
 import '../../data/model/expense.dart';
+import '../../themes.dart';
 import '../widgets/expense_widgets/create_new_expense_widget.dart';
 import '../widgets/date_filter_expenses_widget.dart';
 import '../widgets/expense_widgets/expenses_list.dart';
+import '../widgets/shared_widgets/total_sum_widget.dart';
 
 class ExpensesScreen extends StatefulWidget {
   const ExpensesScreen(
@@ -33,7 +36,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Expense Control'),
+        title: Text('Expense control'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -61,26 +64,25 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              child: Text(
-                widget.category.name,
-                style: TextStyle(fontSize: 20),
-              ),
-              margin: EdgeInsets.all(10)),
-          Container(
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    BlocProvider.of<CategoryBloc>(context)
-                        .add(GetCategories(widget.selectedDateRange));
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.arrow_back_ios),
-                ),
-                Expanded(child: Text('Expenses')),
-              ],
-            ),
-          ),
+              margin: EdgeInsets.all(5),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      BlocProvider.of<CategoryBloc>(context)
+                          .add(GetCategories(widget.selectedDateRange));
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios),
+                    iconSize: 20,
+                  ),
+                  Text(
+                    widget.category.name,
+                    style: GoogleFonts.caveat(
+                        textStyle: Theme.of(context).textTheme.headline4!),
+                  ),
+                ],
+              )),
           DateFilterExpensesWidget(),
           Expanded(
             child: ExpensesList(
@@ -92,15 +94,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             builder: (context, state) {
               if (state is ExpenseLoaded) {
                 return Container(
-                    margin: EdgeInsets.only(
-                        top: 10,
-                        bottom: 70,
-                        left: 30,
-                        right: 20), //symmetric(horizontal: 30, vertical: 70),
-                    child: Text(
-                      'Total: ${state.totalSum} \$',
-                      style: TextStyle(fontSize: 20),
-                    ));
+                  margin:
+                      kTotalSumMargin, //symmetric(horizontal: 30, vertical: 70),
+                  child: TotalSumWidget(totalSum: state.totalSum),
+                );
               } else if (state is CategoryLoading) {
                 return CircularProgressIndicator();
               } else {

@@ -2,6 +2,7 @@ import 'package:expense_control_app/data/model/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../icons.dart';
 import '../../../main.dart';
 
 class CreateNewCategoryWidget extends StatefulWidget {
@@ -93,40 +94,10 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
   }
 
   _showIconGrid() {
-    var ls = [
-      Icons.web_asset,
-      Icons.weekend,
-      Icons.whatshot,
-      Icons.widgets,
-      Icons.wifi,
-      Icons.wifi_lock,
-      Icons.wifi_tethering,
-      Icons.work,
-      Icons.wrap_text,
-      Icons.youtube_searched_for,
-      Icons.zoom_in,
-      Icons.zoom_out,
-      Icons.zoom_out_map,
-      Icons.restaurant_menu,
-      Icons.restore,
-      Icons.restore_from_trash,
-      Icons.restore_page,
-      Icons.ring_volume,
-      Icons.room,
-      Icons.exposure_zero,
-      Icons.extension,
-      Icons.face,
-      Icons.fast_forward,
-      Icons.fast_rewind,
-      Icons.fastfood,
-      Icons.favorite,
-      Icons.favorite_border,
-    ];
-
     return GridView.count(
       crossAxisCount: 8,
-      children: List.generate(ls.length, (index) {
-        var iconData = ls[index];
+      children: List.generate(icons.length, (index) {
+        var iconData = icons[index];
         return IconButton(
           color: iconDataCodeLocal == null
               ? Colors.grey[600]

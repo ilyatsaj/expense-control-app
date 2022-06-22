@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 import '../../../data/data_provider/expense_data.dart';
 import '../../../data/data_provider/filter_date_time_data.dart';
@@ -24,7 +23,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       try {
         List<Expense>? expenses = await _expenseData.getAll(event.category);
         DateTimeRange? dtr = await _filterData.getFilterDateTimeRange();
-        if (dtr != null && expenses != null) {
+        if (expenses != null) {
           DateTime rangeStart =
               DateTime.utc(dtr.start.year, dtr.start.month, dtr.start.day);
           DateTime rangeEnd =

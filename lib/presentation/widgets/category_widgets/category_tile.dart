@@ -31,49 +31,60 @@ class CategoryTile extends StatelessWidget {
                       )));
         },
         child: ListTile(
+          //dense: true,
+          //visualDensity: VisualDensity(horizontal: 5),
+          minLeadingWidth: 1,
           leading: category.iconData != null
               ? Icon(IconData(category.iconData!, fontFamily: 'MaterialIcons'))
               : Icon(null),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(category.name),
-              Text('${DateFormat.yMd().format(category.dc)}'),
-              Text('${category.totalAmount} \$'),
-            ],
+          title: Container(
+            child: Row(
+              // mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(category.name),
+                Text('${DateFormat.yMd().format(category.dc)}'),
+                Text('${category.totalAmount} \$'),
+              ],
+            ),
           ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: new Icon(Icons.edit),
-                highlightColor: Colors.grey,
-                onPressed: () async {
-                  final result = await showDialog<Category>(
-                      context: context,
-                      builder: (context) => Dialog(
-                            child: CreateNewCategoryWidget(category: category),
-                          ));
+          //subtitle: Text('${DateFormat.yMd().format(category.dc)}'),
+          trailing: SizedBox(
+            //width: 80,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: new Icon(Icons.edit),
+                  highlightColor: Colors.grey,
+                  onPressed: () async {
+                    final result = await showDialog<Category>(
+                        context: context,
+                        builder: (context) => Dialog(
+                              child:
+                                  CreateNewCategoryWidget(category: category),
+                            ));
 
-                  if (result != null) {
+                    if (result != null) {
+                      BlocProvider.of<CategoryBloc>(context)
+                          .add(UpdateCategory(result));
+                      BlocProvider.of<CategoryBloc>(context)
+                          .add(GetCategories(selectedDateRange));
+                    }
+                  },
+                ),
+                IconButton(
+                  icon: new Icon(Icons.delete),
+                  highlightColor: Colors.grey,
+                  onPressed: () async {
                     BlocProvider.of<CategoryBloc>(context)
-                        .add(UpdateCategory(result));
+                        .add(DeleteCategory(category));
                     BlocProvider.of<CategoryBloc>(context)
                         .add(GetCategories(selectedDateRange));
-                  }
-                },
-              ),
-              IconButton(
-                icon: new Icon(Icons.delete),
-                highlightColor: Colors.grey,
-                onPressed: () async {
-                  BlocProvider.of<CategoryBloc>(context)
-                      .add(DeleteCategory(category));
-                  BlocProvider.of<CategoryBloc>(context)
-                      .add(GetCategories(selectedDateRange));
-                },
-              ),
-            ],
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

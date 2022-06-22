@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
+import '../../constants.dart';
+import '../../main.dart';
 import '../../themes.dart';
 
 class DateFilterExpensesWidget extends StatefulWidget {
@@ -32,10 +34,7 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
               children: [
                 Container(
                   margin: EdgeInsets.all(10),
-                  child: Text(
-                    'Filter: ',
-                    style: kGreyTextStyle,
-                  ),
+                  child: kFilterLabel,
                 ),
                 BlocBuilder<FilterDateTimeBloc, FilterDateTimeState>(
                     builder: (context, state) {
@@ -43,7 +42,11 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
                     return Text(
                         DateHelper.dateRangeToFormattedString(
                             state.dateTimeRange),
-                        style: TextStyle(color: Colors.amber[600]));
+                        style: TextStyle(
+                            color: ExpenseControlApp.themeNotifier.value ==
+                                    ThemeMode.light
+                                ? kColorAmberCustom[600]
+                                : kColorCyanCustom));
                   } else if (state is FilterLoading) {
                     return const Center(
                       child: LinearProgressIndicator(),
@@ -61,7 +64,7 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
                 firstDate: DateTime(2022, 1, 1),
                 lastDate: DateTime(2030, 12, 31),
                 currentDate: DateTime.now(),
-                saveText: 'Save',
+                saveText: kSaveButtonText,
               );
               // BlocProvider.of<ExpenseBloc>(context)
               //     .add(GetExpenses(state.category, result));

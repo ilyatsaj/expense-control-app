@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business_logic/blocs/category_bloc/category_bloc.dart';
+import '../../constants.dart';
 import '../../themes.dart';
 
 class DateFilterCategoriesWidget extends StatefulWidget {
@@ -32,10 +33,7 @@ class _DateFilterCategoriesWidgetState
           children: [
             Container(
               margin: EdgeInsets.all(10),
-              child: Text(
-                'Filter: ',
-                style: kGreyTextStyle,
-              ),
+              child: kFilterLabel,
             ),
             BlocBuilder<FilterDateTimeBloc, FilterDateTimeState>(
                 builder: (context, state) {
@@ -45,8 +43,8 @@ class _DateFilterCategoriesWidgetState
                     style: TextStyle(
                         color: ExpenseControlApp.themeNotifier.value ==
                                 ThemeMode.light
-                            ? Colors.amber[600]
-                            : Color(0xFF64FFDA)));
+                            ? kColorAmberCustom[600]
+                            : kColorCyanCustom));
               } else if (state is FilterLoading) {
                 return Container();
               } else {
@@ -62,7 +60,7 @@ class _DateFilterCategoriesWidgetState
             firstDate: DateTime(2022, 1, 1),
             lastDate: DateTime(2030, 12, 31),
             currentDate: DateTime.now(),
-            saveText: 'Save',
+            saveText: kSaveButtonText,
           );
           BlocProvider.of<CategoryBloc>(context)..add(GetCategories(result));
           BlocProvider.of<FilterDateTimeBloc>(context)

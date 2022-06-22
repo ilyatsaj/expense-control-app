@@ -3,44 +3,14 @@ import 'package:hive/hive.dart';
 import '../model/category.dart';
 
 class CategoryData {
-  final List<Category> _categories = [
-    Category(
-        id: 0,
-        name: 'food',
-        description: 'descr1',
-        totalAmount: 0,
-        iconData: 61665,
-        dc: DateTime.now()),
-    Category(
-        id: 1,
-        name: 'plane',
-        description: 'descr2',
-        totalAmount: 35,
-        iconData: 61668,
-        dc: DateTime.now()),
-    Category(
-        id: 2,
-        name: 'book',
-        description: 'descr3',
-        totalAmount: 4,
-        iconData: 61667,
-        dc: DateTime.now())
-  ];
-
   late Box<Category> _categoriesHive;
 
   Future<void> init() async {
     _categoriesHive = await Hive.openBox<Category>('categories');
-
-    // await _categoriesHive.clear();
-    // await _categoriesHive.add(_categories[0]);
-    // await _categoriesHive.add(_categories[1]);
-    // await _categoriesHive.add(_categories[2]);
   }
 
   Future<List<Category>> getAll() async {
     _categoriesHive = await Hive.openBox<Category>('categories');
-    //await Future.delayed(Duration(seconds: 1));
     final categories = _categoriesHive.values;
 
     return categories.toList();
@@ -48,7 +18,7 @@ class CategoryData {
 
   Future<void> addCategory(Category category) async {
     _categoriesHive = await Hive.openBox<Category>('categories');
-    if (!_categoriesHive.values.isEmpty) {
+    if (_categoriesHive.values.isNotEmpty) {
       category.id = _categoriesHive.values.last.id == null
           ? null
           : _categoriesHive.values.last.id! + 1;

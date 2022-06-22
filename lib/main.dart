@@ -2,7 +2,6 @@ import 'package:expense_control_app/business_logic/blocs/category_bloc/category_
 import 'package:expense_control_app/data/model/filter_date_time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import 'business_logic/blocs/expense_bloc/expense_bloc.dart';
@@ -19,12 +18,12 @@ void main() async {
   Hive.registerAdapter<Category>(CategoryAdapter());
   Hive.registerAdapter<Expense>(ExpenseAdapter());
   Hive.registerAdapter<FilterDateTime>(FilterDateTimeAdapter());
-  final CategoryData _categoryData = CategoryData();
-  final ExpenseData _expenseData = ExpenseData();
-  final FilterDateTimeData _filterDateTimeData = FilterDateTimeData();
-  _categoryData.init;
-  _expenseData.init;
-  _filterDateTimeData.init;
+  final CategoryData categoryData = CategoryData();
+  final ExpenseData expenseData = ExpenseData();
+  final FilterDateTimeData filterDateTimeData = FilterDateTimeData();
+  categoryData.init;
+  expenseData.init;
+  filterDateTimeData.init;
   runApp(const ExpenseControlApp());
 }
 
@@ -49,26 +48,8 @@ class ExpenseControlApp extends StatelessWidget {
               theme: ThemeData(primarySwatch: Colors.amber),
               darkTheme: ThemeData.dark(),
               themeMode: currentMode,
-              title: 'Expense Control',
-              home: Scaffold(
-                  appBar: AppBar(
-                    title: Text('Expense Control'),
-                    actions: [
-                      IconButton(
-                          icon: Icon(ExpenseControlApp.themeNotifier.value ==
-                                  ThemeMode.light
-                              ? Icons.dark_mode
-                              : Icons.light_mode),
-                          onPressed: () {
-                            ExpenseControlApp.themeNotifier.value =
-                                ExpenseControlApp.themeNotifier.value ==
-                                        ThemeMode.light
-                                    ? ThemeMode.dark
-                                    : ThemeMode.light;
-                          })
-                    ],
-                  ),
-                  body: CategoriesScreen()),
+              title: 'Expense control',
+              home: const CategoriesScreen(),
             );
           }),
     );

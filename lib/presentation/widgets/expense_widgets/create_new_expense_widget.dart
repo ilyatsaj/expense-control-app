@@ -1,8 +1,10 @@
+import 'package:expense_control_app/icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../data/model/expense.dart';
+import '../../../main.dart';
 
 class CreateUpdateExpenseWidget extends StatefulWidget {
   final Expense? expense;
@@ -73,7 +75,10 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
                 child: _showIconGrid())),
         ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.cyan),
+              backgroundColor:
+                  ExpenseControlApp.themeNotifier.value == ThemeMode.light
+                      ? MaterialStateProperty.all<Color>(Colors.amber)
+                      : MaterialStateProperty.all<Color>(Color(0xFF64FFDA)),
             ),
             onPressed: () async {
               final expense = Expense(
@@ -82,7 +87,7 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
                   name: _nameInputController!.text,
                   description: _descriptionInputController!.text,
                   amount: int.parse(_amountInputController!.text),
-                  iconData: _iconDataCodeLocal,
+                  iconData: widget.expense!.iconData,
                   dc: widget.expense!.dc);
               setState(() {
                 _nameInputController!.text.isEmpty
@@ -91,46 +96,23 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
               });
               if (!_validate) Navigator.of(context).pop(expense);
             },
-            child: Text('Save'))
+            child: Text(
+              'Save',
+              style: TextStyle(
+                color: ExpenseControlApp.themeNotifier.value == ThemeMode.light
+                    ? Colors.black87
+                    : Colors.black87,
+              ),
+            ))
       ],
     );
   }
 
   _showIconGrid() {
-    var ls = [
-      Icons.web_asset,
-      Icons.weekend,
-      Icons.whatshot,
-      Icons.widgets,
-      Icons.wifi,
-      Icons.wifi_lock,
-      Icons.wifi_tethering,
-      Icons.work,
-      Icons.wrap_text,
-      Icons.youtube_searched_for,
-      Icons.zoom_in,
-      Icons.zoom_out,
-      Icons.zoom_out_map,
-      Icons.restaurant_menu,
-      Icons.restore,
-      Icons.restore_from_trash,
-      Icons.restore_page,
-      Icons.ring_volume,
-      Icons.room,
-      Icons.exposure_zero,
-      Icons.extension,
-      Icons.face,
-      Icons.fast_forward,
-      Icons.fast_rewind,
-      Icons.fastfood,
-      Icons.favorite,
-      Icons.favorite_border,
-    ];
-
     return GridView.count(
       crossAxisCount: 8,
-      children: List.generate(ls.length, (index) {
-        var iconData = ls[index];
+      children: List.generate(icons.length, (index) {
+        var iconData = icons[index];
         return IconButton(
           color: _iconDataCodeLocal == null
               ? Colors.grey[600]

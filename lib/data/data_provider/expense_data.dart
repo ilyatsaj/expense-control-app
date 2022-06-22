@@ -3,58 +3,14 @@ import '../model/category.dart';
 import '../model/expense.dart';
 
 class ExpenseData {
-  final List<Expense> _expenses = [
-    Expense(
-        id: 0,
-        categoryId: 1,
-        name: 'potato',
-        description: 'descr1',
-        amount: 2,
-        iconData: 61665,
-        dc: DateTime.now()),
-    Expense(
-        id: 1,
-        categoryId: 1,
-        name: 'tomato',
-        description: 'descr2',
-        amount: 35,
-        iconData: 61668,
-        dc: DateTime.now()),
-    Expense(
-        id: 2,
-        categoryId: 1,
-        name: 'cucumber',
-        description: 'descr3',
-        amount: 15,
-        iconData: 61667,
-        dc: DateTime.now()),
-    Expense(
-        id: 3,
-        categoryId: 2,
-        name: 'Harry Potter book',
-        description: 'descr3',
-        amount: 4,
-        iconData: 61667,
-        dc: DateTime.now()),
-  ];
-
   late Box<Expense> _expensesHive;
 
   Future<void> init() async {
     _expensesHive = await Hive.openBox<Expense>('expenses');
-
-    // await _expensesHive.clear();
-    //
-    // await _expensesHive.add(_expenses[0]);
-    // await _expensesHive.add(_expenses[1]);
-    // await _expensesHive.add(_expenses[2]);
-    // await _expensesHive.add(_expenses[3]);
   }
 
   Future<List<Expense>?> getAll(Category category) async {
     _expensesHive = await Hive.openBox<Expense>('expenses');
-    //await Future.delayed(Duration(seconds: 1));
-    print('getAll expenses');
     final expenses = _expensesHive.values
         .where((element) => element.categoryId == category.id);
 
@@ -62,7 +18,7 @@ class ExpenseData {
   }
 
   Future<void> addExpense(Expense expense, Category category) async {
-    if (!_expensesHive.values.isEmpty) {
+    if (_expensesHive.values.isNotEmpty) {
       expense.id = _expensesHive.values.last.id == null
           ? null
           : _expensesHive.values.last.id! + 1;
