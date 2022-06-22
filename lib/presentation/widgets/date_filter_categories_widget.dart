@@ -1,7 +1,6 @@
 import 'package:expense_control_app/business_logic/blocs/filter_date_time_bloc/filter_date_time_bloc.dart';
 import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:expense_control_app/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,11 +12,11 @@ class DateFilterCategoriesWidget extends StatefulWidget {
   DateFilterCategoriesWidget({Key? key}) : super(key: key);
 
   @override
-  _DateFilterCategoriesWidgetState createState() =>
-      _DateFilterCategoriesWidgetState();
+  DateFilterCategoriesWidgetState createState() =>
+      DateFilterCategoriesWidgetState();
 }
 
-class _DateFilterCategoriesWidgetState
+class DateFilterCategoriesWidgetState
     extends State<DateFilterCategoriesWidget> {
   @override
   void initState() {
@@ -32,7 +31,7 @@ class _DateFilterCategoriesWidgetState
         child: Row(
           children: [
             Container(
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               child: kFilterLabel,
             ),
             BlocBuilder<FilterDateTimeBloc, FilterDateTimeState>(

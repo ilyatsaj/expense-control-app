@@ -44,67 +44,81 @@ class _CreateUpdateExpenseWidgetState extends State<CreateUpdateExpenseWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: _nameInputController,
-          decoration: InputDecoration(
-            labelText: 'Expense name',
-            errorText: _validate ? 'Value Can\'t Be Empty' : null,
-          ),
-        ),
-        TextField(
-          controller: _descriptionInputController,
-          decoration: const InputDecoration(
-            labelText: 'Description',
-          ),
-        ),
-        TextField(
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          controller: _amountInputController,
-          decoration: const InputDecoration(
-            labelText: 'Amount',
-          ),
-        ),
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.symmetric(vertical: 12.0),
-                child: _showIconGrid())),
-        ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor:
-                  ExpenseControlApp.themeNotifier.value == ThemeMode.light
-                      ? MaterialStateProperty.all<Color>(Colors.amber)
-                      : MaterialStateProperty.all<Color>(Color(0xFF64FFDA)),
-            ),
-            onPressed: () async {
-              final expense = Expense(
-                  id: widget.expense?.id,
-                  categoryId: widget.expense!.categoryId,
-                  name: _nameInputController!.text,
-                  description: _descriptionInputController!.text,
-                  amount: int.parse(_amountInputController!.text),
-                  iconData: widget.expense!.iconData,
-                  dc: widget.expense!.dc);
-              setState(() {
-                _nameInputController!.text.isEmpty
-                    ? _validate = true
-                    : _validate = false;
-              });
-              if (!_validate) Navigator.of(context).pop(expense);
+    return Container(
+      margin: const EdgeInsets.only(right: 5, left: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
             },
-            child: Text(
-              'Save',
-              style: TextStyle(
-                color: ExpenseControlApp.themeNotifier.value == ThemeMode.light
-                    ? Colors.black87
-                    : Colors.black87,
-              ),
-            ))
-      ],
+            icon: const Icon(Icons.close),
+            iconSize: 20,
+          ),
+          TextField(
+            controller: _nameInputController,
+            decoration: InputDecoration(
+              labelText: 'Expense name',
+              errorText: _validate ? 'Value Can\'t Be Empty' : null,
+            ),
+          ),
+          TextField(
+            controller: _descriptionInputController,
+            decoration: const InputDecoration(
+              labelText: 'Description',
+            ),
+          ),
+          TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            controller: _amountInputController,
+            decoration: const InputDecoration(
+              labelText: 'Amount',
+            ),
+          ),
+          Expanded(
+              child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                  child: _showIconGrid())),
+          Center(
+            child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      ExpenseControlApp.themeNotifier.value == ThemeMode.light
+                          ? MaterialStateProperty.all<Color>(Colors.amber)
+                          : MaterialStateProperty.all<Color>(Color(0xFF64FFDA)),
+                ),
+                onPressed: () async {
+                  final expense = Expense(
+                      id: widget.expense?.id,
+                      categoryId: widget.expense!.categoryId,
+                      name: _nameInputController!.text,
+                      description: _descriptionInputController!.text,
+                      amount: int.parse(_amountInputController!.text),
+                      iconData: _iconDataCodeLocal,
+                      dc: widget.expense!.dc);
+                  setState(() {
+                    _nameInputController!.text.isEmpty
+                        ? _validate = true
+                        : _validate = false;
+                  });
+                  if (!_validate) Navigator.of(context).pop(expense);
+                },
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                    color:
+                        ExpenseControlApp.themeNotifier.value == ThemeMode.light
+                            ? Colors.black87
+                            : Colors.black87,
+                  ),
+                )),
+          )
+        ],
+      ),
     );
   }
 

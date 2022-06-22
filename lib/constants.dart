@@ -7,3 +7,5 @@ const kFilterLabel = Text(
   'Filter: ',
   style: kGreyTextStyle,
 );
+
+const kDeleteConfirmBox = Text('Are you sure to remove the record?');

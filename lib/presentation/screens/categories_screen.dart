@@ -1,5 +1,6 @@
 import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
 import 'package:expense_control_app/presentation/widgets/shared_widgets/total_sum_widget.dart';
+import 'package:expense_control_app/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,10 +15,10 @@ class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
 
   @override
-  _CategoriesScreenState createState() => _CategoriesScreenState();
+  CategoriesScreenState createState() => CategoriesScreenState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> {
+class CategoriesScreenState extends State<CategoriesScreen> {
   DateTimeRange? _selectedDateRange;
 
   @override
@@ -76,7 +77,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         children: [
           Center(
             child: Container(
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               alignment: Alignment.topLeft,
               child: Text(
                 'Categories',
@@ -95,8 +96,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             builder: (context, state) {
               if (state is CategoryLoaded) {
                 return Container(
-                    margin: EdgeInsets.only(
-                        top: 10, bottom: 70, left: 30, right: 20),
+                    margin: kTotalSumMargin,
                     child: TotalSumWidget(
                       totalSum: state.totalSum,
                     ));

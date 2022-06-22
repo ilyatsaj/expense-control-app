@@ -2,7 +2,6 @@ import 'package:expense_control_app/data/model/category.dart';
 import 'package:expense_control_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:io';
 
@@ -10,17 +9,12 @@ void main() {
   setUp(() async {
     // expenseBloc = ExpenseBloc();
     if (Platform.isMacOS) {
-      var path_provider_macos;
-      await path_provider_macos.getApplicationDocumentsDirectory();
-      // Android-specific code
-      print(Platform.isMacOS);
       await Hive.initFlutter();
 
       //Hive.registerAdapter<Expense>(ExpenseAdapter());
       Hive.registerAdapter<Category>(CategoryAdapter());
       //late Box<Expense> _expensesHive;
-      Box<Category> _categoriesHive =
-          await Hive.openBox<Category>('categories');
+      Box<Category> categoriesHive = await Hive.openBox<Category>('categories');
 
       //_categoriesHive = await Hive.openBox<Category>('categories');
       //_expensesHive = await Hive.openBox<Expense>('expenses');

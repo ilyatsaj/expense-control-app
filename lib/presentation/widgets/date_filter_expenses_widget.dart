@@ -1,6 +1,5 @@
 import 'package:expense_control_app/business_logic/blocs/filter_date_time_bloc/filter_date_time_bloc.dart';
 import 'package:expense_control_app/helpers/date_helper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,14 +9,14 @@ import '../../main.dart';
 import '../../themes.dart';
 
 class DateFilterExpensesWidget extends StatefulWidget {
-  DateFilterExpensesWidget({Key? key}) : super(key: key);
+  const DateFilterExpensesWidget({Key? key}) : super(key: key);
 
   @override
-  _DateFilterExpensesWidgetState createState() =>
-      _DateFilterExpensesWidgetState();
+  DateFilterExpensesWidgetState createState() =>
+      DateFilterExpensesWidgetState();
 }
 
-class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
+class DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
   @override
   void initState() {
     super.initState();
@@ -66,8 +65,8 @@ class _DateFilterExpensesWidgetState extends State<DateFilterExpensesWidget> {
                 currentDate: DateTime.now(),
                 saveText: kSaveButtonText,
               );
-              // BlocProvider.of<ExpenseBloc>(context)
-              //     .add(GetExpenses(state.category, result));
+              BlocProvider.of<ExpenseBloc>(context)
+                  .add(GetExpenses(state.category, result));
               BlocProvider.of<FilterDateTimeBloc>(context)
                   .add(SetFilterDateTime(result!));
               BlocProvider.of<FilterDateTimeBloc>(context)

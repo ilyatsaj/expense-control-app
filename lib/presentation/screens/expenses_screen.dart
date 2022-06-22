@@ -36,7 +36,9 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Expense control'),
+        title: Text('Expense control',
+            style: GoogleFonts.faustina(
+                textStyle: Theme.of(context).textTheme.headline5!)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -58,13 +60,13 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 .add(GetExpenses(widget.category, widget.selectedDateRange));
           }
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              margin: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
               child: Row(
                 children: [
                   IconButton(
@@ -73,7 +75,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                           .add(GetCategories(widget.selectedDateRange));
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.arrow_back_ios),
+                    icon: const Icon(Icons.arrow_back_ios),
                     iconSize: 20,
                   ),
                   Text(
@@ -99,7 +101,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                   child: TotalSumWidget(totalSum: state.totalSum),
                 );
               } else if (state is CategoryLoading) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else {
                 return Container();
                 //return const Text('Error in filters (expenses_screen)');

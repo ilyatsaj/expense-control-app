@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:expense_control_app/business_logic/blocs/expense_bloc/expense_bloc.dart';
 import 'package:expense_control_app/data/model/category.dart';
 import 'package:expense_control_app/data/model/expense.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:test/test.dart';
 
@@ -13,7 +12,7 @@ void main() {
       totalAmount: 5,
       dc: DateTime(2022, 5, 5));
 
-  final List<Expense> _expenses = [
+  final List<Expense> expenses = [
     Expense(
         id: 0,
         categoryId: 0,
@@ -67,10 +66,10 @@ void main() {
       await _expensesHive.clear();
       //
       await _categoriesHive.add(_category);
-      await _expensesHive.add(_expenses[0]);
-      await _expensesHive.add(_expenses[1]);
-      await _expensesHive.add(_expenses[2]);
-      await _expensesHive.add(_expenses[3]);
+      await _expensesHive.add(expenses[0]);
+      await _expensesHive.add(expenses[1]);
+      await _expensesHive.add(expenses[2]);
+      await _expensesHive.add(expenses[3]);
 
       // expenseBloc = ExpenseBloc();
     });
@@ -82,7 +81,7 @@ void main() {
       act: (bloc) => bloc.on<GetExpenses>((event, emit) => null),
       expect: () => [
         ExpenseLoading(),
-        ExpenseLoaded(expenses: _expenses, category: _category, totalSum: 43),
+        ExpenseLoaded(expenses: expenses, category: _category, totalSum: 43),
       ],
     );
 

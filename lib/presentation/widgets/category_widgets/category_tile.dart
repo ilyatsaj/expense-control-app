@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../business_logic/blocs/category_bloc/category_bloc.dart';
+import '../../../constants.dart';
 import '../../../data/model/category.dart';
 import '../../screens/expenses_screen.dart';
 
@@ -36,7 +37,7 @@ class CategoryTile extends StatelessWidget {
           minLeadingWidth: 1,
           leading: category.iconData != null
               ? Icon(IconData(category.iconData!, fontFamily: 'MaterialIcons'))
-              : Icon(null),
+              : const Icon(null),
           title: Container(
             child: Row(
               // mainAxisSize: MainAxisSize.min,
@@ -74,13 +75,10 @@ class CategoryTile extends StatelessWidget {
                   },
                 ),
                 IconButton(
-                  icon: new Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   highlightColor: Colors.grey,
                   onPressed: () async {
-                    BlocProvider.of<CategoryBloc>(context)
-                        .add(DeleteCategory(category));
-                    BlocProvider.of<CategoryBloc>(context)
-                        .add(GetCategories(selectedDateRange));
+                    _delete(context);
                   },
                 ),
               ],
@@ -89,5 +87,33 @@ class CategoryTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _delete(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            title: const Text('Please Confirm'),
+            content: kDeleteConfirmBox,
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    BlocProvider.of<CategoryBloc>(context)
+                        .add(DeleteCategory(category));
+                    BlocProvider.of<CategoryBloc>(context)
+                        .add(GetCategories(selectedDateRange));
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Yes')),
+              TextButton(
+                  onPressed: () {
+                    // Close the dialog
+                    Navigator.pop(context);
+                  },
+                  child: const Text('No'))
+            ],
+          );
+        });
   }
 }

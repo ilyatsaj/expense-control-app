@@ -1,4 +1,5 @@
 import 'package:expense_control_app/data/model/category.dart';
+import 'package:expense_control_app/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +12,10 @@ class CreateNewCategoryWidget extends StatefulWidget {
   const CreateNewCategoryWidget({Key? key, this.category}) : super(key: key);
 
   @override
-  _CreateNewCategoryWidgetState createState() =>
-      _CreateNewCategoryWidgetState();
+  CreateNewCategoryWidgetState createState() => CreateNewCategoryWidgetState();
 }
 
-class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
+class CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
   TextEditingController? _nameInputController;
   TextEditingController? _descriptionInputController;
   int? iconDataCodeLocal;
@@ -39,57 +39,71 @@ class _CreateNewCategoryWidgetState extends State<CreateNewCategoryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: _nameInputController,
-          decoration: InputDecoration(
-            labelText: 'Category name',
-            errorText: _validate ? 'Value Can\'t Be Empty' : null,
+    return Container(
+      margin: const EdgeInsets.only(right: 5, left: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.close),
+            iconSize: 20,
           ),
-        ),
-        TextField(
-          controller: _descriptionInputController,
-          decoration: const InputDecoration(
-            labelText: 'Description',
-          ),
-        ),
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.symmetric(vertical: 12.0),
-                child: _showIconGrid())),
-        ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                ExpenseControlApp.themeNotifier.value == ThemeMode.light
-                    ? MaterialStateProperty.all<Color>(Colors.amber)
-                    : MaterialStateProperty.all<Color>(Color(0xFF64FFDA)),
-          ),
-          onPressed: () async {
-            final category = Category(
-                id: widget.category?.id,
-                name: _nameInputController!.text,
-                description: _descriptionInputController!.text,
-                totalAmount: 0,
-                iconData: iconDataCodeLocal,
-                dc: DateTime.now());
-            setState(() {
-              _nameInputController!.text.isEmpty
-                  ? _validate = true
-                  : _validate = false;
-            });
-            if (!_validate) Navigator.of(context).pop(category);
-          },
-          child: Text(
-            'Save',
-            style: TextStyle(
-              color: ExpenseControlApp.themeNotifier.value == ThemeMode.light
-                  ? Colors.black87
-                  : Colors.black87,
+          TextField(
+            controller: _nameInputController,
+            decoration: InputDecoration(
+              labelText: 'Category name',
+              errorText: _validate ? 'Value Can\'t Be Empty' : null,
             ),
           ),
-        )
-      ],
+          TextField(
+            controller: _descriptionInputController,
+            decoration: const InputDecoration(
+              labelText: 'Description',
+            ),
+          ),
+          Expanded(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: _showIconGrid())),
+          Center(
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    ExpenseControlApp.themeNotifier.value == ThemeMode.light
+                        ? MaterialStateProperty.all<Color>(kColorAmberCustom)
+                        : MaterialStateProperty.all<Color>(kColorCyanCustom),
+              ),
+              onPressed: () async {
+                final category = Category(
+                    id: widget.category?.id,
+                    name: _nameInputController!.text,
+                    description: _descriptionInputController!.text,
+                    totalAmount: 0,
+                    iconData: iconDataCodeLocal,
+                    dc: DateTime.now());
+                setState(() {
+                  _nameInputController!.text.isEmpty
+                      ? _validate = true
+                      : _validate = false;
+                });
+                if (!_validate) Navigator.of(context).pop(category);
+              },
+              child: Text(
+                'Save',
+                style: TextStyle(
+                  color:
+                      ExpenseControlApp.themeNotifier.value == ThemeMode.light
+                          ? Colors.black87
+                          : Colors.black87,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

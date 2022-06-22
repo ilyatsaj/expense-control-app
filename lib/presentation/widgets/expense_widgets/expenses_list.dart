@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,10 +13,10 @@ class ExpensesList extends StatefulWidget {
       {Key? key, required this.category, required this.dateTimeRange})
       : super(key: key);
   @override
-  _ExpensesListState createState() => _ExpensesListState();
+  ExpensesListState createState() => ExpensesListState();
 }
 
-class _ExpensesListState extends State<ExpensesList> {
+class ExpensesListState extends State<ExpensesList> {
   ExpenseBloc? _expenseBloc;
   @override
   void initState() {
