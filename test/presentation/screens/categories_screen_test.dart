@@ -1,39 +1,79 @@
+import 'package:expense_control_app/business_logic/blocs/filter_date_time_bloc/filter_date_time_bloc.dart';
 import 'package:expense_control_app/data/model/category.dart';
 import 'package:expense_control_app/main.dart';
+import 'package:expense_control_app/presentation/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'dart:io';
+import 'package:hive_test/hive_test.dart';
+import 'package:mockito/mockito.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
+  MockBuildContext _mockContext;
   setUp(() async {
-    // expenseBloc = ExpenseBloc();
-    if (Platform.isMacOS) {
-      await Hive.initFlutter();
+    Category category = Category(
+        name: 'testName',
+        description: 'testDescr',
+        totalAmount: 0,
+        dc: DateTime.now());
 
-      //Hive.registerAdapter<Expense>(ExpenseAdapter());
-      Hive.registerAdapter<Category>(CategoryAdapter());
-      //late Box<Expense> _expensesHive;
-      Box<Category> categoriesHive = await Hive.openBox<Category>('categories');
-
-      //_categoriesHive = await Hive.openBox<Category>('categories');
-      //_expensesHive = await Hive.openBox<Expense>('expenses');
-
-      //await _categoriesHive.clear();
-      //await _expensesHive.clear();
-      //
-      // await _categoriesHive.add(_category);
-      // await _expensesHive.add(_expenses[0]);
-      // await _expensesHive.add(_expenses[1]);
-      // await _expensesHive.add(_expenses[2]);
-      // await _expensesHive.add(_expenses[3]);
-
-      // expenseBloc = ExpenseBloc();
-    }
+    await setUpTestHive();
+    final box = await Hive.openBox<Category>('categories');
+    Hive.registerAdapter(CategoryAdapter());
+    await box.add(category);
+    _mockContext = MockBuildContext();
+    FilterDateTimeBloc bloc = FilterDateTimeBloc();
+    BlocProvider.of<FilterDateTimeBloc>(_mockContext).add(GetFilterDateTime());
   });
 
-  testWidgets('widget exists', (WidgetTester tester) async {
-    await tester.pumpWidget(ExpenseControlApp());
+  tearDown(() async {
+    // await tearDownTestHive();
+  });
+  group('Category screen elements exist check', () {
+    testWidgets('Categories label exists on screen page',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        _TestWidget(
+          child: Scaffold(
+            body: Column(
+              children: [
+                Center(
+                  child: Text('Categories'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      expect(find.text('Categories'), findsOneWidget);
+    });
+  });
+
+  testWidgets('FloatingActionButton exists on screen page',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      _TestWidget(
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(CategoriesScreen());
+    //await tester.pumpAndSettle();
     expect(find.byType(FloatingActionButton), findsNWidgets(1));
   });
+}
+
+class _TestWidget extends StatelessWidget {
+  const _TestWidget({required this.child, Key? key}) : super(key: key);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(home: child);
 }

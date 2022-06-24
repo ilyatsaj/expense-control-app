@@ -55,4 +55,12 @@ class ExpenseData {
     categoryToUpdate.totalAmount = category.totalAmount - expense.amount;
     await categoryToUpdate.save();
   }
+
+  Future<void> removeNestedExpenses(Category category) async {
+    final expensesToRemove = _expensesHive.values
+        .where((element) => element.categoryId == category.id);
+    for (var expense in expensesToRemove) {
+      await expense.delete();
+    }
+  }
 }

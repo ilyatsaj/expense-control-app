@@ -18,6 +18,11 @@ class DeleteExpense extends ExpenseEvent {
   DeleteExpense(this.expense, this.category);
 }
 
+class DeleteAllNestedExpenses extends ExpenseEvent {
+  final Category category;
+  DeleteAllNestedExpenses(this.category);
+}
+
 class AddExpense extends ExpenseEvent {
   final Category category;
   final Expense expense;

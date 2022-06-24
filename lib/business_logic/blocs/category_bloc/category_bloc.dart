@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:expense_control_app/data/data_provider/category_data.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/data_provider/expense_data.dart';
 import '../../../data/data_provider/filter_date_time_data.dart';
 import '../../../data/model/category.dart';
 
@@ -11,10 +12,12 @@ part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final CategoryData _categoryData = CategoryData();
+  final ExpenseData _expenseData = ExpenseData();
   final FilterDateTimeData _filterData = FilterDateTimeData();
 
   CategoryBloc() : super(CategoryInitial()) {
     _categoryData.init();
+    _expenseData.init();
     _filterData.init();
     on<GetCategories>((event, emit) async {
       int totalSum = 0;
@@ -54,14 +57,17 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         emit(CategoryLoadingFailure(error: e.toString()));
       }
     });
+
     on<DeleteCategory>((event, emit) async {
       emit(CategoryLoading());
       try {
+        await _expenseData.removeNestedExpenses(event.category);
         await _categoryData.removeCategory(event.category);
       } catch (e) {
         emit(CategoryLoadingFailure(error: e.toString()));
       }
     });
+
     on<AddCategory>((event, emit) async {
       emit(CategoryLoading());
       try {

@@ -43,8 +43,28 @@ class CategoryTile extends StatelessWidget {
               // mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(category.name),
-                Text('${DateFormat.yMd().format(category.dc)}'),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        category.name,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '${DateFormat.yMd().format(category.dc)}',
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Text('${category.totalAmount} \$'),
               ],
             ),
@@ -99,8 +119,11 @@ class CategoryTile extends StatelessWidget {
             actions: [
               TextButton(
                   onPressed: () {
+                    print('we are tt');
                     BlocProvider.of<CategoryBloc>(context)
                         .add(DeleteCategory(category));
+                    // BlocProvider.of<ExpenseBloc>(context)
+                    //     .add(DeleteAllNestedExpenses(category));
                     BlocProvider.of<CategoryBloc>(context)
                         .add(GetCategories(selectedDateRange));
                     Navigator.pop(context);

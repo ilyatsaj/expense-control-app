@@ -27,8 +27,28 @@ class ExpenseTile extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(expense.name),
-            Text('${DateFormat.yMd().format(expense.dc)}'),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    expense.name,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    '${DateFormat.yMd().format(expense.dc)}',
+                    style: TextStyle(
+                      fontSize: 10.0,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Text('${expense.amount} \$'),
           ],
         ),

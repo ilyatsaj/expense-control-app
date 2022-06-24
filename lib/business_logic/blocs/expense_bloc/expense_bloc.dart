@@ -66,6 +66,16 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
         emit(LoadingFailure(error: e.toString()));
       }
     });
+
+    on<DeleteAllNestedExpenses>((event, emit) async {
+      emit(ExpenseLoading());
+      try {
+        await _expenseData.removeNestedExpenses(event.category);
+      } catch (e) {
+        emit(LoadingFailure(error: e.toString()));
+      }
+    });
+
     on<AddExpense>((event, emit) async {
       emit(ExpenseLoading());
       try {

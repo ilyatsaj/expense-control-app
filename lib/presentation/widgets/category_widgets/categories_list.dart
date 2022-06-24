@@ -33,7 +33,6 @@ class _CategoriesListState extends State<CategoriesList> {
       builder: (context, state) {
         if (state is CategoryLoaded) {
           return ListView.builder(
-            padding: EdgeInsets.all(0),
             itemCount: state.categories!.length,
             itemBuilder: (context, index) {
               return CategoryTile(

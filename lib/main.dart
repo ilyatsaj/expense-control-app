@@ -49,7 +49,7 @@ class ExpenseControlApp extends StatelessWidget {
               darkTheme: ThemeData.dark(),
               themeMode: currentMode,
               title: 'Expense control',
-              home: const CategoriesScreen(),
+              home: CategoriesScreen(),
             );
           }),
     );
