@@ -10,22 +10,22 @@ class Category extends HiveObject {
   String name;
 
   @HiveField(2)
-  String description;
+  String? description;
 
   @HiveField(3)
-  int totalAmount;
+  int? totalAmount;
 
   @HiveField(4)
   int? iconData;
 
   @HiveField(5)
-  DateTime dc;
+  DateTime? dc;
 
   Category(
       {this.id,
       required this.name,
-      required this.description,
-      required this.totalAmount,
-      required this.dc,
+      this.description,
+      this.totalAmount,
+      this.dc,
       this.iconData});
 }

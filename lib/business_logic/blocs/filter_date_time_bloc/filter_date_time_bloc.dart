@@ -8,8 +8,8 @@ part 'filter_date_time_state.dart';
 class FilterDateTimeBloc
     extends Bloc<FilterDateTimeEvent, FilterDateTimeState> {
   final FilterDateTimeData _filterData = FilterDateTimeData();
+
   FilterDateTimeBloc() : super(FilterDateTimeInitial()) {
-    _filterData.init();
     on<GetFilterDateTime>((event, emit) async {
       emit(FilterLoading());
       try {

@@ -55,12 +55,8 @@ class CategoriesScreenState extends State<CategoriesScreen> {
               builder: (context) => Dialog(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: CreateNewCategoryWidget(
-                          category: Category(
-                              name: '',
-                              description: '',
-                              totalAmount: 0,
-                              dc: DateTime.now())),
+                      child:
+                          CreateNewCategoryWidget(category: Category(name: '')),
                     ),
                   ));
 

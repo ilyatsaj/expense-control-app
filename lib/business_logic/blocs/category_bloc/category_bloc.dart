@@ -16,9 +16,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final FilterDateTimeData _filterData = FilterDateTimeData();
 
   CategoryBloc() : super(CategoryInitial()) {
-    _categoryData.init();
-    _expenseData.init();
-    _filterData.init();
     on<GetCategories>((event, emit) async {
       int totalSum = 0;
       emit(CategoryLoading());
@@ -29,26 +26,28 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             DateTime.utc(dtr.start.year, dtr.start.month, dtr.start.day);
         DateTime rangeEnd =
             DateTime.utc(dtr.end.year, dtr.end.month, dtr.end.day);
-
         categories = categories
             .where((element) =>
-                DateTime.utc(element.dc.year, element.dc.month, element.dc.day)
+                DateTime.utc(element.dc!.year, element.dc!.month,
+                            element.dc!.day)
                         .compareTo(rangeStart) ==
                     0 ||
-                DateTime.utc(element.dc.year, element.dc.month, element.dc.day)
+                DateTime.utc(element.dc!.year, element.dc!.month,
+                            element.dc!.day)
                         .compareTo(rangeEnd) ==
                     0 ||
-                (DateTime.utc(element.dc.year, element.dc.month, element.dc.day)
+                (DateTime.utc(element.dc!.year, element.dc!.month,
+                                element.dc!.day)
                             .compareTo(rangeStart) >
                         0 &&
-                    DateTime.utc(element.dc.year, element.dc.month,
-                                element.dc.day)
+                    DateTime.utc(element.dc!.year, element.dc!.month,
+                                element.dc!.day)
                             .compareTo(rangeEnd) <
                         0))
             .toList();
         if (categories.isNotEmpty) {
           for (Category c in categories) {
-            totalSum = totalSum + c.totalAmount;
+            totalSum = totalSum + c.totalAmount!;
           }
         }
         emit(CategoryLoaded(
@@ -58,11 +57,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       }
     });
 
-    on<DeleteCategory>((event, emit) async {
+    on<DeleteCategory>((event, emit) {
       emit(CategoryLoading());
       try {
-        await _expenseData.removeNestedExpenses(event.category);
-        await _categoryData.removeCategory(event.category);
+        _expenseData.removeNestedExpenses(event.category);
+        _categoryData.removeCategory(event.category);
       } catch (e) {
         emit(CategoryLoadingFailure(error: e.toString()));
       }

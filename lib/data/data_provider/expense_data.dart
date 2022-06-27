@@ -1,16 +1,13 @@
+import 'package:expense_control_app/data/data_provider/hive_config.dart';
 import 'package:hive/hive.dart';
 import '../model/category.dart';
 import '../model/expense.dart';
 
 class ExpenseData {
-  late Box<Expense> _expensesHive;
-
-  Future<void> init() async {
-    _expensesHive = await Hive.openBox<Expense>('expenses');
-  }
+  final Box<Expense> _expensesHive = HiveConfig.expensesBox;
+  final Box<Category> _categoriesHive = HiveConfig.categoriesBox;
 
   Future<List<Expense>?> getAll(Category category) async {
-    _expensesHive = await Hive.openBox<Expense>('expenses');
     final expenses = _expensesHive.values
         .where((element) => element.categoryId == category.id);
 
@@ -28,10 +25,9 @@ class ExpenseData {
 
     _expensesHive.add(expense);
 
-    Box<Category> categoriesHive = await Hive.openBox<Category>('categories');
-    final categoryToUpdate = categoriesHive.values
+    final categoryToUpdate = _categoriesHive.values
         .firstWhere((element) => element.id == category.id);
-    categoryToUpdate.totalAmount = category.totalAmount + expense.amount;
+    categoryToUpdate.totalAmount = category.totalAmount! + expense.amount;
     await categoryToUpdate.save();
   }
 
@@ -49,18 +45,20 @@ class ExpenseData {
     final expenseToRemove = _expensesHive.values
         .firstWhere((element) => element.name == expense.name);
     await expenseToRemove.delete();
-    Box<Category> categoriesHive = await Hive.openBox<Category>('categories');
-    final categoryToUpdate = categoriesHive.values
+
+    final categoryToUpdate = _categoriesHive.values
         .firstWhere((element) => element.id == category.id);
-    categoryToUpdate.totalAmount = category.totalAmount - expense.amount;
+    categoryToUpdate.totalAmount = category.totalAmount! - expense.amount;
     await categoryToUpdate.save();
   }
 
   Future<void> removeNestedExpenses(Category category) async {
     final expensesToRemove = _expensesHive.values
         .where((element) => element.categoryId == category.id);
-    for (var expense in expensesToRemove) {
-      await expense.delete();
+    if (expensesToRemove.isNotEmpty) {
+      for (var expense in expensesToRemove) {
+        await expense.delete();
+      }
     }
   }
 }

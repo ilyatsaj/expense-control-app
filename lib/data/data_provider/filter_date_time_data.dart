@@ -1,3 +1,4 @@
+import 'package:expense_control_app/data/data_provider/hive_config.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -6,16 +7,9 @@ import '../model/filter_date_time.dart';
 class FilterDateTimeData {
   //
 
-  late Box<FilterDateTime> _filterDateTimeHive;
-
-  Future<void> init() async {
-    _filterDateTimeHive =
-        await Hive.openBox<FilterDateTime>('filter_date_time');
-  }
+  final Box<FilterDateTime> _filterDateTimeHive = HiveConfig.filterRangeBox;
 
   Future<DateTimeRange> getFilterDateTimeRange() async {
-    _filterDateTimeHive =
-        await Hive.openBox<FilterDateTime>('filter_date_time');
     final DateTime filterStart;
     final DateTime filterEnd;
     if (_filterDateTimeHive.values.isNotEmpty) {
@@ -30,9 +24,6 @@ class FilterDateTimeData {
   }
 
   Future<void> setFilterDateTime(DateTimeRange dateTimeRange) async {
-    _filterDateTimeHive =
-        await Hive.openBox<FilterDateTime>('filter_date_time');
-    //await Future.delayed(Duration(seconds: 1));
     final FilterDateTime filterToUpdate;
     if (_filterDateTimeHive.isNotEmpty) {
       filterToUpdate = _filterDateTimeHive.values.first;

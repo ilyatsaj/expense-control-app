@@ -19,9 +19,9 @@ class CategoryAdapter extends TypeAdapter<Category> {
     return Category(
       id: fields[0] as double?,
       name: fields[1] as String,
-      description: fields[2] as String,
-      totalAmount: fields[3] as int,
-      dc: fields[5] as DateTime,
+      description: fields[2] as String?,
+      totalAmount: fields[3] as int?,
+      dc: fields[5] as DateTime?,
       iconData: fields[4] as int?,
     );
   }

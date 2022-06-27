@@ -16,8 +16,6 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
   ExpenseBloc() : super(ExpenseInitial()) {
     on<GetExpenses>((event, emit) async {
-      _expenseData.init();
-      _filterData.init();
       int totalSum = 0;
       emit(ExpenseLoading());
       try {

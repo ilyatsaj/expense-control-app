@@ -46,6 +46,7 @@ class CategoryTile extends StatelessWidget {
                 Flexible(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: 10,
@@ -55,7 +56,7 @@ class CategoryTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        '${DateFormat.yMd().format(category.dc)}',
+                        '${DateFormat.yMd().format(category.dc!)}',
                         style: TextStyle(
                           fontSize: 10.0,
                           color: Colors.grey,
@@ -119,11 +120,8 @@ class CategoryTile extends StatelessWidget {
             actions: [
               TextButton(
                   onPressed: () {
-                    print('we are tt');
                     BlocProvider.of<CategoryBloc>(context)
                         .add(DeleteCategory(category));
-                    // BlocProvider.of<ExpenseBloc>(context)
-                    //     .add(DeleteAllNestedExpenses(category));
                     BlocProvider.of<CategoryBloc>(context)
                         .add(GetCategories(selectedDateRange));
                     Navigator.pop(context);
