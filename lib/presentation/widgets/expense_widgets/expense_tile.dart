@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import '../../../business_logic/blocs/expense_bloc/expense_bloc.dart';
+import '../../../business_logic/cubits/expense_cubit/expense_cubit.dart';
 import '../../../constants.dart';
 import '../../../data/model/category.dart';
 import '../../../data/model/expense.dart';
@@ -19,7 +19,7 @@ class ExpenseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ExpenseBloc(),
+      create: (context) => ExpenseCubit(),
       child: ListTile(
         leading: expense.iconData != null
             ? Icon(IconData(expense.iconData!, fontFamily: 'MaterialIcons'))
@@ -64,10 +64,12 @@ class ExpenseTile extends StatelessWidget {
                       ));
 
               if (result != null) {
-                BlocProvider.of<ExpenseBloc>(context)
-                    .add(UpdateExpense(category, result));
-                BlocProvider.of<ExpenseBloc>(context)
-                    .add(GetExpenses(category, dateTimeRange));
+                // BlocProvider.of<ExpenseBloc>(context)
+                //     .add(UpdateExpense(category, result));
+                // BlocProvider.of<ExpenseBloc>(context)
+                //     .add(GetExpenses(category, dateTimeRange));
+                context.read<ExpenseCubit>().updateExpense(result);
+                context.read<ExpenseCubit>().getExpenses(category);
               }
             },
           ),
@@ -93,10 +95,14 @@ class ExpenseTile extends StatelessWidget {
             actions: [
               TextButton(
                   onPressed: () {
-                    BlocProvider.of<ExpenseBloc>(context)
-                        .add(DeleteExpense(expense, category));
-                    BlocProvider.of<ExpenseBloc>(context)
-                        .add(GetExpenses(category, dateTimeRange));
+                    // BlocProvider.of<ExpenseBloc>(context)
+                    //     .add(DeleteExpense(expense, category));
+                    // BlocProvider.of<ExpenseBloc>(context)
+                    //     .add(GetExpenses(category, dateTimeRange));
+                    context
+                        .read<ExpenseCubit>()
+                        .deleteExpense(category, expense);
+                    context.read<ExpenseCubit>().getExpenses(category);
                     Navigator.pop(context);
                   },
                   child: const Text('Yes')),

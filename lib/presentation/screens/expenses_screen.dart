@@ -1,9 +1,9 @@
-import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
+import 'package:expense_control_app/business_logic/cubits/category_cubit/category_cubit.dart';
+import 'package:expense_control_app/business_logic/cubits/expense_cubit/expense_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../business_logic/blocs/expense_bloc/expense_bloc.dart';
 import '../../data/model/category.dart';
 import '../../data/model/expense.dart';
 import '../../themes.dart';
@@ -26,7 +26,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   @override
   void initState() {
     super.initState();
-
+    //context.read<ExpenseCubit>().getExpenses(widget.category);
     // BlocProvider.of<ExpenseBloc>(context)
     //     .add(GetExpenses(widget.category, widget.selectedDateRange));
   }
@@ -54,10 +54,8 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     child: CreateUpdateExpenseWidget(expense: expense),
                   ));
           if (result != null) {
-            BlocProvider.of<ExpenseBloc>(context)
-                .add(AddExpense(widget.category, result));
-            BlocProvider.of<ExpenseBloc>(context)
-                .add(GetExpenses(widget.category, widget.selectedDateRange));
+            context.read<ExpenseCubit>().addExpense(widget.category, result);
+            context.read<ExpenseCubit>().getExpenses(widget.category);
           }
         },
         child: const Icon(Icons.add),
@@ -71,8 +69,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      BlocProvider.of<CategoryBloc>(context)
-                          .add(GetCategories(widget.selectedDateRange));
+                      context.read<CategoryCubit>().getCategories();
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.arrow_back_ios),
@@ -92,12 +89,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               dateTimeRange: widget.selectedDateRange,
             ),
           ),
-          BlocBuilder<ExpenseBloc, ExpenseState>(
+          BlocBuilder<ExpenseCubit, ExpenseState>(
             builder: (context, state) {
               if (state is ExpenseLoaded) {
                 return Container(
-                  margin:
-                      kTotalSumMargin, //symmetric(horizontal: 30, vertical: 70),
+                  margin: kTotalSumMargin,
                   child: TotalSumWidget(totalSum: state.totalSum),
                 );
               } else if (state is CategoryLoading) {

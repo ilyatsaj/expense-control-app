@@ -1,37 +1,17 @@
-import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
+import 'package:expense_control_app/business_logic/cubits/category_cubit/category_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'category_tile.dart';
 
-class CategoriesList extends StatefulWidget {
-  DateTimeRange? selectedDateRange;
-  CategoriesList({required DateTimeRange? selectedDateRange, Key? key})
-      : super(key: key);
-
-  @override
-  _CategoriesListState createState() => _CategoriesListState();
-}
-
-class _CategoriesListState extends State<CategoriesList> {
-  CategoryBloc? _categoryBloc;
-  @override
-  void initState() {
-    _categoryBloc = BlocProvider.of<CategoryBloc>(context)
-      ..add(GetCategories(widget.selectedDateRange));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class CategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(
-      bloc: _categoryBloc,
+    return BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
+        print('entered BlocBuilder');
         if (state is CategoryLoaded) {
+          print('entered Loaded in CategoryList');
           return ListView.builder(
             itemCount: state.categories!.length,
             itemBuilder: (context, index) {

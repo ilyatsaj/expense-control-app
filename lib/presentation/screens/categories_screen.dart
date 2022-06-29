@@ -1,10 +1,10 @@
-import 'package:expense_control_app/business_logic/blocs/category_bloc/category_bloc.dart';
+import 'package:expense_control_app/business_logic/cubits/category_cubit/category_cubit.dart';
+import 'package:expense_control_app/business_logic/cubits/filter_date_time_cubit/filter_date_time_cubit.dart';
 import 'package:expense_control_app/presentation/widgets/shared_widgets/total_sum_widget.dart';
 import 'package:expense_control_app/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../business_logic/blocs/filter_date_time_bloc/filter_date_time_bloc.dart';
 import '../../data/model/category.dart';
 import '../../main.dart';
 import '../widgets/category_widgets/categories_list.dart';
@@ -19,12 +19,11 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class CategoriesScreenState extends State<CategoriesScreen> {
-  DateTimeRange? _selectedDateRange;
-
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<FilterDateTimeBloc>(context).add(GetFilterDateTime());
+    context.read<FilterDateTimeCubit>().getFilterDateTime();
+    context.read<CategoryCubit>().getCategories();
   }
 
   @override
@@ -61,9 +60,8 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                   ));
 
           if (result != null) {
-            BlocProvider.of<CategoryBloc>(context).add(AddCategory(result));
-            BlocProvider.of<CategoryBloc>(context)
-                .add(GetCategories(_selectedDateRange));
+            context.read<CategoryCubit>().addCategory(result);
+            context.read<CategoryCubit>().getCategories();
           }
         },
         child: Icon(Icons.add),
@@ -84,18 +82,17 @@ class CategoriesScreenState extends State<CategoriesScreen> {
           ),
           DateFilterCategoriesWidget(),
           Expanded(
-            child: CategoriesList(
-              selectedDateRange: _selectedDateRange,
-            ),
+            child: CategoriesList(),
           ),
-          BlocBuilder<CategoryBloc, CategoryState>(
+          BlocBuilder<CategoryCubit, CategoryState>(
             builder: (context, state) {
               if (state is CategoryLoaded) {
                 return Container(
-                    margin: kTotalSumMargin,
-                    child: TotalSumWidget(
-                      totalSum: state.totalSum,
-                    ));
+                  margin: kTotalSumMargin,
+                  child: TotalSumWidget(
+                    totalSum: state.totalSum,
+                  ),
+                );
               } else if (state is CategoryLoading) {
                 return Container();
               } else {

@@ -1,10 +1,10 @@
-import 'package:expense_control_app/business_logic/blocs/filter_date_time_bloc/filter_date_time_bloc.dart';
+import 'package:expense_control_app/business_logic/cubits/category_cubit/category_cubit.dart';
 import 'package:expense_control_app/helpers/date_helper.dart';
 import 'package:expense_control_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic/blocs/category_bloc/category_bloc.dart';
+import '../../business_logic/cubits/filter_date_time_cubit/filter_date_time_cubit.dart';
 import '../../constants.dart';
 import '../../themes.dart';
 
@@ -34,7 +34,7 @@ class DateFilterCategoriesWidgetState
               margin: const EdgeInsets.all(10),
               child: kFilterLabel,
             ),
-            BlocBuilder<FilterDateTimeBloc, FilterDateTimeState>(
+            BlocBuilder<FilterDateTimeCubit, FilterDateTimeState>(
                 builder: (context, state) {
               if (state is FilterLoaded) {
                 return Text(
@@ -61,10 +61,11 @@ class DateFilterCategoriesWidgetState
             currentDate: DateTime.now(),
             saveText: kSaveButtonText,
           );
-          BlocProvider.of<CategoryBloc>(context)..add(GetCategories(result));
-          BlocProvider.of<FilterDateTimeBloc>(context)
-              .add(SetFilterDateTime(result!));
-          BlocProvider.of<FilterDateTimeBloc>(context).add(GetFilterDateTime());
+          context.read<CategoryCubit>().getCategories();
+          if (result != null) {
+            context.read<FilterDateTimeCubit>().setFilterDateTime(result);
+          }
+          context.read<FilterDateTimeCubit>().getFilterDateTime();
         },
       ),
     );

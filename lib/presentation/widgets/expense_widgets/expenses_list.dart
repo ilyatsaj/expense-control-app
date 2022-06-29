@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../business_logic/blocs/expense_bloc/expense_bloc.dart';
+import '../../../business_logic/cubits/expense_cubit/expense_cubit.dart';
 import '../../../data/model/category.dart';
 import 'expense_tile.dart';
 
@@ -17,12 +17,11 @@ class ExpensesList extends StatefulWidget {
 }
 
 class ExpensesListState extends State<ExpensesList> {
-  ExpenseBloc? _expenseBloc;
+  ExpenseCubit? _expenseCubit;
   @override
   void initState() {
     super.initState();
-    _expenseBloc = BlocProvider.of<ExpenseBloc>(context)
-      ..add(GetExpenses(widget.category, widget.dateTimeRange));
+    _expenseCubit = context.read<ExpenseCubit>()..getExpenses(widget.category);
   }
 
   @override
@@ -32,8 +31,8 @@ class ExpensesListState extends State<ExpensesList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExpenseBloc, ExpenseState>(
-      bloc: _expenseBloc,
+    return BlocBuilder<ExpenseCubit, ExpenseState>(
+      bloc: _expenseCubit,
       builder: (context, state) {
         if (state is ExpenseLoaded) {
           return ListView.builder(
